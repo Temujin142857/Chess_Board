@@ -6,13 +6,25 @@ import java.util.HashMap;
 
 public class Rook implements Piece {
     String[] letters= LETTERS.getLETTERS();
+    private String name;
 
+    public Rook(String name){
+        this.name=name;
+    }
+/**
+ * returns null because not relevant, to be set if visual needs it
+ */
     @Override
     public String getName() {
         return null;
     }
 
-
+/**
+ * takes care of return a string arrayList of the rook's vision
+ * @param location initial space of the piece
+ * @param board dictionary of the board
+ * @return the vision of the rook piece
+ */
     @Override
     public String[] getVision(String location,HashMap<String,Piece> board) {
         ArrayList<String> moves=new ArrayList<>();
@@ -31,7 +43,15 @@ public class Rook implements Piece {
 
 
     }
-
+/**
+ * finds if a move is valid using the horizontal & vertical shift
+ * @param horizontal_shift horizontal shift trying to be applied.
+ * @param vertical_shift vertical shift trying to be applied.
+ * @param location location of the pawn.
+ * @param board dictionary of the board.
+ * @param x checks if a pawn moved or not.
+ * @returns if a move is valid.
+ */
     @Override
     public boolean canMove(int horizontal_shift, int vertical_shift, String location, HashMap<String, Piece> board, boolean x) {
         return horizontal_shift == 0 || vertical_shift == 0;
