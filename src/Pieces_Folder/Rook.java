@@ -2,21 +2,19 @@ package Pieces_Folder;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Rook implements Piece {
-    String[] letters= LETTERS.getLETTERS();
     private String name;
 
     public Rook(String name){
         this.name=name;
     }
 /**
- * returns null because not relevant, to be set if visual needs it
+ * getter for name
  */
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
 /**
@@ -26,7 +24,7 @@ public class Rook implements Piece {
  * @return the vision of the rook piece
  */
     @Override
-    public String[] getVision(String location,HashMap<String,Piece> board) {
+    public int[][] getVision(int[] location,Piece[][] board){
         ArrayList<String> moves=new ArrayList<>();
         String square_being_checked;
         for (int i = 0; i < 8; i++) {
@@ -49,11 +47,27 @@ public class Rook implements Piece {
  * @param vertical_shift vertical shift trying to be applied.
  * @param location location of the pawn.
  * @param board dictionary of the board.
- * @param x checks if a pawn moved or not.
+ * @param isCapturing checks if the piece is capturing or not.
  * @returns if a move is valid.
  */
     @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, String location, HashMap<String, Piece> board, boolean x) {
-        return horizontal_shift == 0 || vertical_shift == 0;
+    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Piece[][] board, boolean isCapturing) {
+        if(horizontal_shift == 0){
+            for (int i = location[1]; i < 8 && i > 0; i+=Math.signum(vertical_shift)) {
+                if(!board[location[0]][i].getName().equals("EMPTY")){
+                    return false;
+                }
+            }
+        }
+        else if(vertical_shift == 0){
+            for (int i = location[0]; i < 8 && i > 0; i+=Math.signum(horizontal_shift)) {
+                if(!board[i][location[1]].getName().equals("EMPTY")){
+                    return false;
+                }
+            }
+        }
+        else return false;
+
+        return true;
     }
 }

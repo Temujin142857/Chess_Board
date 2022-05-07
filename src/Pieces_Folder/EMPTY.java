@@ -1,6 +1,5 @@
 package Pieces_Folder;
 
-import java.util.HashMap;
 
 /**
  * represents an empty piece, so every propriety is basically null.
@@ -14,16 +13,17 @@ public class EMPTY implements Piece {
 
     @Override
     public String getName() {
-        return "EMPTY";
+        return this.name;
     }
 
     @Override
-    public String[] getVision(String location,HashMap<String,Piece> board) {
-        return new String[0];
+    public int[][] getVision(int[] location, Piece[][] board) {
+        return new int[0][];
     }
 
+
     @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, String location, HashMap<String, Piece> board, boolean x) {
+    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Piece[][] board, boolean isCapturing) {
         return false;
     }
 }

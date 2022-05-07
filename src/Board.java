@@ -4,26 +4,29 @@ import Pieces_Folder.Piece;
 import java.util.HashMap;
 
 public class Board { //represents the game board
-    final String[] WPIECENAMES ={"WRook1","WKnight1","WBishop1","WQueen","WKing","WBishop2","WKnight2","WRook2","WPawn1","WPawn2","WPawn3","WPawn4","WPawn5","WPawn6","WPawn7","WPawn8"}; //white pieces
-    final String[] BPIECENAMES ={"BRook1","BKnight1","BBishop1","BQueen","BKing","BBishop2","BKnight2","BRook2","BPawn1","BPawn2","BPawn3","BPawn4","BPawn5","BPawn6","BPawn7","BPawn8"}; //black pieces
-    final String[] LETTERS ={"a","b","c","d","e","f","g","h"}; // letters for the horizontal ligns.
-    HashMap<String, Piece> board = new HashMap<String, Piece>(); // dictionnary that contains each position and the piece it contains.
-    EMPTY empty=new EMPTY(); // create an empty object, which represents an empty square on the board
+    final private String[] WPIECENAMES ={"WRook1","WKnight1","WBishop1","WQueen","WKing","WBishop2","WKnight2","WRook2","WPawn1","WPawn2","WPawn3","WPawn4","WPawn5","WPawn6","WPawn7","WPawn8"}; //white pieces
+    final private String[] BPIECENAMES ={"BRook1","BKnight1","BBishop1","BQueen","BKing","BBishop2","BKnight2","BRook2","BPawn1","BPawn2","BPawn3","BPawn4","BPawn5","BPawn6","BPawn7","BPawn8"}; //black pieces
+    final private String[] LETTERS ={"a","b","c","d","e","f","g","h"}; // letters for the horizontal lines.
+    final private EMPTY empty=new EMPTY("EMPTY"); // create an empty object, which represents an empty square on the board
+    private Piece[][] board = new Piece[7][7]; // array that contains all the pieces.
 
     /**
      * Constructor
      */
     public Board(){
-        for (int i = 0; i < 64; i++) {
-            if (i < 16) {
-                board.put(LETTERS[i % 8] + i / 8, Piece.makePiece(WPIECENAMES[i])); //set up white pieces
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (j<2) {
+                    board[i][j]= Piece.makePiece(WPIECENAMES[i]); //set up white pieces
+                }
+                else if (j<6) {
+                    board[i][j]= empty; //set up white pieces
+                }
+                else {
+                    board[i][j]=Piece.makePiece(BPIECENAMES[i]); //sets up all the black pieces
+                }
             }
-            if(16<=i&&i<48){
-                board.put(LETTERS[i % 8] + i / 8, empty); //sets up all the empty spaces
-            }
-            if(48<=i&&i<64){
-                board.put(LETTERS[i%8]+i/8, Piece.makePiece(BPIECENAMES[i])); //sets up all the black pieces
-            }
+
         }
     }
 
@@ -33,21 +36,32 @@ public class Board { //represents the game board
  * @param location2 ending location
  * @return move is possible
  */
-    public boolean move(String location1,String location2){ 
+    public boolean move(int[] location1,int[] location2){
         boolean pawnIsCapturing=false;
-        int horizontal_shift=location1.charAt(0)-location2.charAt(0); 
-        int vertical_shift=location1.charAt(1)-location2.charAt(1);
-        if(!board.containsKey(location1)||!board.containsKey(location2)){
+        int horizontal_shift=location1[0]-location2[0];
+        int vertical_shift=location1[1]-location2[1];
+        if(!isValidLocation(location1)||!isValidLocation(location2)){
             System.out.println("invalid location");
             return false;
         }
-        if(board.get(location2)!=empty){pawnIsCapturing=true;}
-        if (board.get(location1).canMove(horizontal_shift,vertical_shift,location1,board,pawnIsCapturing)){
-            board.put(location2,board.get(location1));
-            board.put(location1, empty);
+        if(board[location2[0]][location2[1]]!=empty){pawnIsCapturing=true;}
+        if (board[location1[0]][location1[1]].canMove(horizontal_shift,vertical_shift,location1,board,pawnIsCapturing)){
+            board[location2[0]][location2[1]]=this.at(location1);
+            board[location1[0]][location1[1]]=this.at(location2);
             return true;
         }
         return false;
+    }
+
+    public boolean isValidLocation(int[] location){
+        for (int coord:location) {
+            if(coord<0||coord>7){return false}
+        }
+        return true;
+    }
+
+    public Piece at(int[] location){
+        return board[location[0]][location[1]];
     }
 
 /**

@@ -17,10 +17,11 @@ public interface Piece {
      if (name.charAt(1)=='P'&&name.charAt(0)=='B'){return new BPawn(name);}
      return new King(name);
  }
+
 /**
  * classic interface stuff
  */
     String getName();
-    String[] getVision(String location,HashMap<String,Piece> board);
-    boolean canMove(int vertical_shift, int horizantal_shift, String location, HashMap<String, Piece> board, boolean isCaptuing);
+    int[][] getVision(int[] location,Piece[][] board);
+    boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Piece[][] board, boolean isCapturing);
 }
