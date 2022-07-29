@@ -1,3 +1,5 @@
+import Chess_Set_Folder.Board;
+
 public class Player { //sets the basics attributes of a player like color, and handles all actions made by a player
     private char colour;
 

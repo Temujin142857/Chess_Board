@@ -1,13 +1,13 @@
-package Pieces_Folder;
+package Chess_Set_Folder.Pieces_Folder;
 
-import java.util.HashMap;
+import Chess_Set_Folder.Board;
 
 public interface Piece {
-/**
- * Creates the piece corresponding to the name it is passed
- * @param name normal string that should contain the name of a piecce
- * @return a new piece of the choice
- */
+    /**
+     * Creates the piece corresponding to the name it is passed
+     * @param name normal string that should contain the name of a piecce
+     * @return a new piece of the choice
+     */
  static Piece makePiece(String name){
      if (name.charAt(1)=='R'){return new Rook(name);}
      if (name.charAt(2)=='n'){return new Knight(name);}
@@ -18,10 +18,10 @@ public interface Piece {
      return new King(name);
  }
 
-/**
- * classic interface stuff
- */
+    /**
+     * classic interface stuff
+     */
     String getName();
-    int[][] getVision(int[] location,Piece[][] board);
-    boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Piece[][] board, boolean isCapturing);
+    int[][] getVision(int[] location, Board board);
+    boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing);
 }

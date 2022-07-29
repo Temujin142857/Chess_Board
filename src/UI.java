@@ -1,3 +1,5 @@
+import Chess_Set_Folder.Board;
+
 public class UI { //main for the project, work in progress; play not finish.
 
     Player Wplayer=new Player('W');
