@@ -74,6 +74,8 @@ public class Board { //represents the game board
         return board[x][y];
     }
 
+    //add a method, would king be in chec, loops through every piece on the board, checks if they could move to the given square
+
     /**
      * Checks if a location on board is empty or not
      * @param location location desired to be checked

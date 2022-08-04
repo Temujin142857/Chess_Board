@@ -24,7 +24,13 @@ public class King implements Piece {
      * @return the vision of the king piece !left to be done!
      */
     @Override
-    public int[][] getVision(int[] location, Board board){return null;}
+    public int[][] getVision(int[] location, Board board){
+        int[][] vision=new int[8][1];
+        for (int i = 0; i < 8; i++) {
+
+        }
+        return null;
+    }
 
     /**
      * finds if a move is valid using the horizontal & vertical shift
@@ -32,7 +38,6 @@ public class King implements Piece {
      * @param vertical_shift vertical shift trying to be applied.
      * @param location location of the pawn.
      * @param board dictionary of the board.
-     * @param x checks if a pawn moved or not.
      * @returns if a move is valid.
      */
     @Override
