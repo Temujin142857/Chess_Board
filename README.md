@@ -1,9 +1,9 @@
-# Chess_Engine
+# Chess_Board
 ##Goal
 Build and optimise a program to play chess against a user.
 
 ##Steps:
-1. Build a working backend for a chess game
+1. Build a working board for a chess game
    1. Build a board class and an interface for the pieces.
    2. Add pieces to the board and provide methods to move them.
    3. Add methods to get vision from all the pieces to detect pins and check.
