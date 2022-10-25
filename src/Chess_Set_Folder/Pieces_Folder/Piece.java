@@ -8,20 +8,23 @@ public interface Piece {
      * @param name normal string that should contain the name of a piecce
      * @return a new piece of the choice
      */
- static Piece makePiece(String name){
-     if (name.charAt(1)=='R'){return new Rook(name);}
-     if (name.charAt(2)=='n'){return new Knight(name);}
-     if (name.charAt(1)=='B'){return new Bishop(name);}
-     if (name.charAt(1)=='Q'){return new Queen(name);}
-     if (name.charAt(1)=='P'&&name.charAt(0)=='W'){return new WPawn(name);}
-     if (name.charAt(1)=='P'&&name.charAt(0)=='B'){return new BPawn(name);}
-     return new King(name);
+ static Piece makePiece(String name, int[] location){
+     if (name.charAt(1)=='R'){return new Rook(name, location);}
+     if (name.charAt(2)=='n'){return new Knight(name, location);}
+     if (name.charAt(1)=='B'){return new Bishop(name, location);}
+     if (name.charAt(1)=='Q'){return new Queen(name, location);}
+     if (name.charAt(1)=='P'&&name.charAt(0)=='W'){return new WPawn(name, location);}
+     if (name.charAt(1)=='P'&&name.charAt(0)=='B'){return new BPawn(name, location);}
+     return new King(name, location);
  }
 
     /**
      * classic interface stuff
      */
     String getName();
+    int[] getLocation();
+    void setLocation(int[] location);
     int[][] getVision(int[] location, Board board);
     boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing);
+    boolean canMove(int[] location, Board board);
 }

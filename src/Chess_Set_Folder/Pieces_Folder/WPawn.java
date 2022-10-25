@@ -4,11 +4,13 @@ package Chess_Set_Folder.Pieces_Folder;
 import Chess_Set_Folder.Board;
 
 public class WPawn implements Piece {
-    boolean hasMoved=false;
+    private boolean hasMoved=false;
     private String name;
+    private int[] location;
 
-    public WPawn(String name){
+    public WPawn(String name, int[] location){
         this.name=name;
+        this.location=location;
     }
 
     /**
@@ -42,5 +44,22 @@ public class WPawn implements Piece {
         if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==-2){return true;}
         if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1){return true;}
         return false;
+    }
+
+    @Override
+    public boolean canMove(int[] location, Board board){
+        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        for (int i = 0; i < location.length; i++) {
+            this.location[i]=location[i];
+        }
     }
 }

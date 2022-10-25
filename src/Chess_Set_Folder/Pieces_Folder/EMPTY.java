@@ -8,9 +8,11 @@ import Chess_Set_Folder.Board;
  */
 public class EMPTY implements Piece {
     private String name;
+    private int[] location;
 
-    public EMPTY(String name){
+    public EMPTY(String name, int[] location){
         this.name=name;
+        this.location=location;
     }
 
     @Override
@@ -28,4 +30,22 @@ public class EMPTY implements Piece {
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
         return false;
     }
+
+    @Override
+    public boolean canMove(int[] location, Board board){
+        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        for (int i = 0; i < location.length; i++) {
+            this.location[i]=location[i];
+        }
+    }
+
 }

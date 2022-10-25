@@ -5,9 +5,11 @@ import Chess_Set_Folder.Board;
 
 public class Queen implements Piece {
     private String name;
+    private int[] location;
 
-    public Queen(String name){
+    public Queen(String name, int[] location){
         this.name=name;
+        this.location=location;
     }
 
     /**
@@ -66,5 +68,22 @@ public class Queen implements Piece {
         return null;
     }
 
+
+    @Override
+    public boolean canMove(int[] location, Board board){
+        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        for (int i = 0; i < location.length; i++) {
+            this.location[i]=location[i];
+        }
+    }
 
 }
