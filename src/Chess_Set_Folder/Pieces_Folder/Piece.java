@@ -27,4 +27,5 @@ public interface Piece {
     int[][] getVision(int[] location, Board board);
     boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing);
     boolean canMove(int[] location, Board board);
+    boolean hasMoved();
 }

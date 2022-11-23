@@ -47,7 +47,7 @@ public class Queen implements Piece {
         }
         else if(vertical_shift == 0){
             for (int i = location[0]; i < 8 && i > 0; i+=Math.signum(horizontal_shift)) {
-                if(!!board.isEmpty(location[0],i)){
+                if(!!board.isEmpty(i,location[1])){
                     return false;
                 }
             }
@@ -72,6 +72,11 @@ public class Queen implements Piece {
     @Override
     public boolean canMove(int[] location, Board board){
         return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return true;
     }
 
     @Override

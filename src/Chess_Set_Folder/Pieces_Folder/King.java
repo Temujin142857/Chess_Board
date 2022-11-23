@@ -45,13 +45,28 @@ public class King implements Piece {
      */
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        if(Math.abs(horizontal_shift)<=1&& Math.abs(vertical_shift)<=1){return true;}
+        if(Math.abs(horizontal_shift)<=1&& Math.abs(vertical_shift)<=1){hasMoved=true; return true;}
+        else if(!board.at(location[0]+horizontal_shift,location[1]+vertical_shift).hasMoved()&&!hasMoved){
+            for (int i = location[0]; i!=location[0]+horizontal_shift; i+=Math.signum(horizontal_shift)) {
+                if (!!board.isEmpty(i, location[1])) {
+                    return false;
+                }
+            }
+            hasMoved=true;
+            this.location=new int[]{location[0]+horizontal_shift,location[1]+vertical_shift};
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean canMove(int[] location, Board board){
         return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return false;
     }
 
     @Override

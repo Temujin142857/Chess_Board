@@ -3,6 +3,8 @@ package Chess_Set_Folder;
 import Chess_Set_Folder.Pieces_Folder.EMPTY;
 import Chess_Set_Folder.Pieces_Folder.Piece;
 
+import java.util.HashMap;
+
 public class Board { //represents the game board
     final private String[] WPIECENAMES ={"WRook1","WKnight1","WBishop1","WQueen","WKing","WBishop2","WKnight2","WRook2","WPawn1","WPawn2","WPawn3","WPawn4","WPawn5","WPawn6","WPawn7","WPawn8"}; //white pieces
     final private String[] BPIECENAMES ={"BRook1","BKnight1","BBishop1","BQueen","BKing","BBishop2","BKnight2","BRook2","BPawn1","BPawn2","BPawn3","BPawn4","BPawn5","BPawn6","BPawn7","BPawn8"}; //black pieces
@@ -57,7 +59,7 @@ public class Board { //represents the game board
 
     private boolean isPawnCapturing(int[] location1,int[] location2){
         return (board[location1[0]][location1[1]].getName().equals("WPawn") && !board[location2[0]][location2[1]].getName().equals("EMPTY"));
-               }
+    }
 
     public boolean isValidLocation(int[] location){
         for (int coord:location) {
@@ -77,7 +79,12 @@ public class Board { //represents the game board
 
     //add a method named would king be in check, loops through every piece on the board, checks if they could move to the given square
 
-    public boolean isCheck(int[] location){
+    /**
+     * takes the location of the king and checks if any pieces are attacking it
+     * @param location the location of the king
+     * @return
+     */
+    public boolean isCheck(int[] location, Piece[][] board){
         for (Piece[] pieces:board){
             for (Piece piece:pieces) {
                 if (!piece.getName().equals("EMPTY") //doesn't check empty pieces
@@ -91,14 +98,30 @@ public class Board { //represents the game board
         return false;
     }
 
+    /**
+     * makes the move, checks if the king of the player who would make the move is in check
+     * @param location1
+     * @param location2
+     * @return
+     */
     public boolean wouldBeCheck(int[] location1,int[] location2){
         char colour=at(location1).getName().charAt(0);
 
         Piece[][] possible_board=board.clone();
         possible_board[location2[0]][location2[1]]=this.at(location1);
         possible_board[location1[0]][location1[1]]=empty;
-
+        isCheck(findKing(colour),possible_board);
         return false;
+    }
+
+    private int[] findKing(char colour){
+        int[] result = null;
+        for (Piece[] column:board) {
+            for (Piece piece:column) {
+                if (piece.getName()==colour+"King")result= piece.getLocation();
+            }
+        }
+        return result;
     }
 
     /**

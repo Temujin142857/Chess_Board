@@ -14,3 +14,6 @@ Build and optimise a program to play chess against a user.
    3. Build methods to determine which future boards are worth analysing, Alpha-Beta search? Monte Carlo Tree search? probably A-B
    4. Lots of testing
 3. (Optional) Add a front end to display a chess board
+
+##Current step
+Detecting checks and checkmate

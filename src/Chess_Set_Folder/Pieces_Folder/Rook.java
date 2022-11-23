@@ -4,7 +4,7 @@ package Chess_Set_Folder.Pieces_Folder;
 import Chess_Set_Folder.Board;
 
 public class Rook implements Piece {
-    private boolean hasMoved;
+    private boolean hasMoved=false;
     private String name;
     private int[] location;
 
@@ -44,19 +44,20 @@ public class Rook implements Piece {
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
         if(horizontal_shift == 0){
-            for (int i = location[1]; i < 8 && i > 0; i+=Math.signum(vertical_shift)) {
+            for (int i = location[1]; i!=location[1]+vertical_shift; i+=Math.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
                     return false;
                 }
             }
         }
         else if(vertical_shift == 0){
-            for (int i = location[0]; i < 8 && i > 0; i+=Math.signum(horizontal_shift)) {
-                if(!!board.isEmpty(location[0],i)){
+            for (int i = location[0]; i!=location[0]+horizontal_shift; i+=Math.signum(horizontal_shift)) {
+                if(!!board.isEmpty(i,location[1])){
                     return false;
                 }
             }
         }
+        hasMoved=true;
         return true;
     }
 
@@ -75,5 +76,9 @@ public class Rook implements Piece {
         for (int i = 0; i < location.length; i++) {
             this.location[i]=location[i];
         }
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
     }
 }

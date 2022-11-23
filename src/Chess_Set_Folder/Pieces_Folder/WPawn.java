@@ -52,6 +52,11 @@ public class WPawn implements Piece {
     }
 
     @Override
+    public boolean hasMoved() {
+        return true;
+    }
+
+    @Override
     public int[] getLocation(){
         return this.location;
     }
