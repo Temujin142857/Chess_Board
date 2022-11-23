@@ -10,12 +10,12 @@ public interface Piece {
      */
  static Piece makePiece(String name, int[] location){
      if (name.charAt(1)=='R'){return new Rook(name, location);}
-     if (name.charAt(2)=='n'){return new Knight(name, location);}
-     if (name.charAt(1)=='B'){return new Bishop(name, location);}
-     if (name.charAt(1)=='Q'){return new Queen(name, location);}
-     if (name.charAt(1)=='P'&&name.charAt(0)=='W'){return new WPawn(name, location);}
-     if (name.charAt(1)=='P'&&name.charAt(0)=='B'){return new BPawn(name, location);}
-     return new King(name, location);
+     else if (name.charAt(2)=='n'){return new Knight(name, location);}
+     else if (name.charAt(1)=='B'){return new Bishop(name, location);}
+     else if (name.charAt(1)=='Q'){return new Queen(name, location);}
+     else if (name.charAt(1)=='P'&&name.charAt(0)=='W'){return new WPawn(name, location);}
+     else if (name.charAt(1)=='P'&&name.charAt(0)=='B'){return new BPawn(name, location);}
+     else return new King(name, location);
  }
 
     /**

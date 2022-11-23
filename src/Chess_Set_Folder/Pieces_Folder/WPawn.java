@@ -40,9 +40,13 @@ public class WPawn implements Piece {
      */
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){return true;}
-        if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==-2){return true;}
-        if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1){return true;}
+        System.out.println("hi pawn");
+        System.out.println("hs: "+horizontal_shift+", "+"vs: "+vertical_shift);
+        System.out.println(isCapturing);
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){hasMoved=true;return true;}
+        if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==-2){
+            System.out.println("hi");hasMoved=true;return true;}
+        if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1){hasMoved=true;return true;}
         return false;
     }
 

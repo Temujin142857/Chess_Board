@@ -29,6 +29,8 @@ public class Queen implements Piece {
      */
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
+        System.out.println("vertical Shift: "+(location[1]-vertical_shift));
+        System.out.println("horizantal Shift:" +horizontal_shift);
         if(Math.abs(horizontal_shift)==Math.abs(vertical_shift)) {
             int sign_of_vs=Integer.signum(vertical_shift);
             int sign_of_hs=Integer.signum(horizontal_shift);
@@ -39,21 +41,21 @@ public class Queen implements Piece {
             }
         }
         else if(horizontal_shift == 0){
-            for (int i = location[1]; i < 8 && i > 0; i+=Math.signum(vertical_shift)) {
+            System.out.println(vertical_shift);
+            for (int i = (int) (location[1]-Math.signum(vertical_shift)); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i-=Math.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
                     return false;
                 }
             }
         }
         else if(vertical_shift == 0){
-            for (int i = location[0]; i < 8 && i > 0; i+=Math.signum(horizontal_shift)) {
-                if(!!board.isEmpty(i,location[1])){
+            for (int i = (int) (location[0]-Math.signum(horizontal_shift)); location[0]-Math.abs(horizontal_shift) < i&&i < location[0]+Math.abs(horizontal_shift); i-=Math.signum(horizontal_shift)) {
+                if(!board.isEmpty(i,location[1])){
                     return false;
                 }
             }
         }
-        else return false;
-
+        System.out.println("worked");
         return true;
     }
 

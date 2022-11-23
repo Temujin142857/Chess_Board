@@ -3,7 +3,7 @@ package Chess_Set_Folder.Pieces_Folder;
 import Chess_Set_Folder.Board;
 
 public class BPawn implements Piece {
-    private boolean hasMoved;
+    private boolean hasMoved=false;
     String name;
     private int[] location;
 
@@ -42,9 +42,10 @@ public class BPawn implements Piece {
      */
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){return true;}
-        if(!isCapturing&&location[0]==6&&horizontal_shift==0&&vertical_shift==2){return true;}
-        if(!isCapturing&&horizontal_shift==0&&vertical_shift==1){return true;}
+        System.out.println("hi pawn");
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){hasMoved=true;return true;}
+        if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==2){hasMoved=true;return true;}
+        if(!isCapturing&&horizontal_shift==0&&vertical_shift==1){hasMoved=true;return true;}
         return false;
     }
 
