@@ -42,7 +42,6 @@ public class BPawn implements Piece {
      */
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        System.out.println("hi pawn");
         if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){hasMoved=true;return true;}
         if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==2){hasMoved=true;return true;}
         if(!isCapturing&&horizontal_shift==0&&vertical_shift==1){hasMoved=true;return true;}
@@ -57,6 +56,11 @@ public class BPawn implements Piece {
     @Override
     public boolean hasMoved() {
         return true;
+    }
+
+    @Override
+    public void setHasMoved(boolean value) {
+        hasMoved=value;
     }
 
     @Override

@@ -25,6 +25,7 @@ public class Player { //sets the basics attributes of a player like color, and h
             if (board.at(location1[0],location1[1]).getName().charAt(0)!=colour){
                 System.out.println(colour);
                 System.out.println(board.at(location1).getName().charAt(0));
+                System.out.println(board.at(location1).getName());
                 System.out.println("wrong colour");continue;
             }
             if (board.move(location1,location2)){

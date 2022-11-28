@@ -31,6 +31,7 @@ public class Queen implements Piece {
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
         System.out.println("vertical Shift: "+(location[1]-vertical_shift));
         System.out.println("horizantal Shift:" +horizontal_shift);
+        if(horizontal_shift==0&&vertical_shift==0){return false;}
         if(Math.abs(horizontal_shift)==Math.abs(vertical_shift)) {
             int sign_of_vs=Integer.signum(vertical_shift);
             int sign_of_hs=Integer.signum(horizontal_shift);
@@ -79,6 +80,9 @@ public class Queen implements Piece {
     @Override
     public boolean hasMoved() {
         return true;
+    }
+    public void setHasMoved(boolean value) {
+
     }
 
     @Override

@@ -40,6 +40,9 @@ public class EMPTY implements Piece {
     public boolean hasMoved() {
         return true;
     }
+    public void setHasMoved(boolean value) {
+
+    }
 
     @Override
     public int[] getLocation(){

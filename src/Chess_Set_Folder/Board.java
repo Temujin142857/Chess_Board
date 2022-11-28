@@ -51,6 +51,7 @@ public class Board { //represents the game board
         System.out.println("at location1:"+at(location1).getName());
         if (at(location1).canMove(horizontal_shift,vertical_shift,location1,this,isPawnCapturing(location1,location2))&&!wouldBeCheck(location1,location2))
         {
+            at(location1).setHasMoved(true);
             board[location2[0]][location2[1]]=at(location1);
             board[location1[0]][location1[1]]=empty;
             System.out.println("location1: "+location1[0]+","+location1[1]);

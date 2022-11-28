@@ -22,10 +22,12 @@ public interface Piece {
      * classic interface stuff
      */
     String getName();
+
     int[] getLocation();
     void setLocation(int[] location);
     int[][] getVision(int[] location, Board board);
     boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing);
     boolean canMove(int[] location, Board board);
     boolean hasMoved();
+    void setHasMoved(boolean value);
 }

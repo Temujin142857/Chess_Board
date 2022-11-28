@@ -43,6 +43,7 @@ public class Rook implements Piece {
      */
     @Override
     public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
+        if(horizontal_shift==0&&vertical_shift==0){return false;}
         if(horizontal_shift == 0){
             for (int i = (int) (location[1]-Math.signum(vertical_shift)); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i-=Math.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
@@ -57,7 +58,6 @@ public class Rook implements Piece {
                 }
             }
         }
-        hasMoved=true;
         return true;
     }
 
@@ -80,5 +80,8 @@ public class Rook implements Piece {
 
     public boolean hasMoved() {
         return hasMoved;
+    }
+    public void setHasMoved(boolean value) {
+        hasMoved=value;
     }
 }

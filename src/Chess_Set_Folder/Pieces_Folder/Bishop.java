@@ -32,6 +32,10 @@ public class Bishop implements Piece {
         return null;
     }
 
+    @Override
+    public void setHasMoved(boolean value) {
+
+    }
 
 
     /**

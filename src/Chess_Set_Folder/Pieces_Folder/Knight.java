@@ -17,7 +17,7 @@ public class Knight implements Piece {
      */
     @Override
     public String getName() {
-        return "Knight";
+        return name;
     }
 
     /**
@@ -53,6 +53,10 @@ public class Knight implements Piece {
     @Override
     public boolean hasMoved() {
         return true;
+    }
+
+    public void setHasMoved(boolean value) {
+
     }
 
     @Override
