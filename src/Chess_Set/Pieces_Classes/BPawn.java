@@ -1,6 +1,6 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
 public class BPawn implements Piece {
     private boolean hasMoved=false;
@@ -41,16 +41,17 @@ public class BPawn implements Piece {
      * @return if the move is legal
      */
     @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){hasMoved=true;return true;}
-        if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==2){hasMoved=true;return true;}
-        if(!isCapturing&&horizontal_shift==0&&vertical_shift==1){hasMoved=true;return true;}
+    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){hasMoved=true;setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});return true;}
+        if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==-2){hasMoved=true;setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});return true;}
+        if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1){hasMoved=true;setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});return true;}
+        setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
         return false;
     }
 
     @Override
     public boolean canMove(int[] location, Board board){
-        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override

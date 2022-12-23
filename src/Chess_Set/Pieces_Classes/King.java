@@ -1,6 +1,6 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
 public class King implements Piece {
     boolean hasMoved=false;
@@ -44,18 +44,28 @@ public class King implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        if(Math.abs(horizontal_shift)<=1&& Math.abs(vertical_shift)<=1){return true;}
-        System.out.println(board.at((int) (location[0]+horizontal_shift+Math.signum(horizontal_shift)),location[1]+vertical_shift).hasMoved());
+    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
+        if(Math.abs(horizontal_shift)<=1&& Math.abs(vertical_shift)<=1){
+            setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
+            hasMoved=true;
+            return true;
+        }
+        System.out.println(board.at(location[0]+horizontal_shift+Integer.signum(horizontal_shift),location[1]+vertical_shift).getName());
+        System.out.println(horizontal_shift);
+        System.out.println(location[0]+horizontal_shift+(Integer.signum(horizontal_shift)));
+        System.out.println(vertical_shift);
         System.out.println(!hasMoved);
-        if(!board.at((int) (location[0]+horizontal_shift+Math.signum(horizontal_shift)),location[1]+vertical_shift).hasMoved()&&!hasMoved){
-            for (int i = location[0]; i!=location[0]+horizontal_shift+Math.signum(horizontal_shift); i+=Math.signum(horizontal_shift)) {
+        if(!(Math.abs(horizontal_shift)==2)||!(vertical_shift==0)){return false;}//makes sure castling is going to a valid square
+        if(((Math.signum(horizontal_shift)==1&&!board.at(7,location[1]).hasMoved())||(Integer.signum(horizontal_shift)==-1&&!board.at(0,location[1]).hasMoved()))&&!hasMoved){
+            for (int i = location[0]+Integer.signum(horizontal_shift); i!=location[0]+horizontal_shift+Integer.signum(horizontal_shift); i+=Integer.signum(horizontal_shift)) {
                 if (!board.isEmpty(i, location[1])) {
                     return false;
                 }
             }
             hasMoved=true;
-            this.location=new int[]{location[0]+horizontal_shift,location[1]+vertical_shift};
+            setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
+            board.put(new int[]{(int) ((2+horizontal_shift)*1.75),location[1]},new int[]{location[0]+horizontal_shift+(Integer.signum(horizontal_shift)*-1),location[1]});
+            //wierd math in the line about just makes location 1's x coordinate 0 when horizontal shift is negative, and 7 when it's positive
             return true;
         }
         return false;
@@ -63,7 +73,7 @@ public class King implements Piece {
 
     @Override
     public boolean canMove(int[] location, Board board){
-        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override

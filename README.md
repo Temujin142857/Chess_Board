@@ -15,5 +15,11 @@ Build and optimise a program to play chess against a user.
    4. Lots of testing
 3. (Optional) Add a front end to display a chess board
 
+
+##revision of steps:
+
+
 ##Current step
-Detecting checks and checkmate
+Detecting checkmate, building the GUI, allowing en passant
+GUI: finish the building pieces method so it adds labels to all the jpanels, and sizes the images properly
+make and add all the image files

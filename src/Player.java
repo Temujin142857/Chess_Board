@@ -1,6 +1,4 @@
-import Chess_Set_Folder.Board;
-
-import java.util.Scanner;
+import Chess_Set.Board;
 
 public class Player { //sets the basics attributes of a player like color, and handles all actions made by a player
     private char colour;
@@ -13,32 +11,29 @@ public class Player { //sets the basics attributes of a player like color, and h
         this.colour=colour;
     }
 
-    public boolean move(Board board){
+    public boolean move(Board board,int[] location1,int[] location2){
         // to be done
         // player selects a square to move to, a call is made to the board requesting to move
         // if move is illegal player is prompted to select another move
-        while (true) {
-            int[] location1=getLocation();//take input
-            int[] location2=getLocation();//take input
-
             // if the player tries to move the wrong coloured piece
             if (board.at(location1[0],location1[1]).getName().charAt(0)!=colour){
                 System.out.println(colour);
                 System.out.println(board.at(location1).getName().charAt(0));
                 System.out.println(board.at(location1).getName());
-                System.out.println("wrong colour");continue;
+                System.out.println("wrong colour");
+                return false;
             }
             if (board.move(location1,location2)){
-                System.out.println("succesful turn");break;}//try and make the move
-        }
+                System.out.println("succesful turn");
+                return true;
+            }//try and make the move
+
 
         return false;
     }
 
-    public int[] getLocation(){
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Where are you clicking?");
-        char[] temp=scanner.nextLine().toCharArray();
+    public int[] getLocation(String location){
+        char[] temp=location.toCharArray();
         int[] result=new int[2];
         for (int i=0;i< temp.length;i++) {
             if(Character.isDigit(temp[i]))result[i]=temp[i]-49;

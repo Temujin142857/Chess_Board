@@ -1,7 +1,6 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
-
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
 /**
  * represents an empty piece, so every propriety is basically null.
@@ -38,6 +37,7 @@ public class EMPTY implements Piece {
 
     @Override
     public boolean hasMoved() {
+        System.out.println("why");
         return true;
     }
     public void setHasMoved(boolean value) {

@@ -1,7 +1,7 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
 
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
 public class Queen implements Piece {
     private String name;
@@ -28,10 +28,9 @@ public class Queen implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
+    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
         System.out.println("vertical Shift: "+(location[1]-vertical_shift));
-        System.out.println("horizantal Shift:" +horizontal_shift);
-        if(horizontal_shift==0&&vertical_shift==0){return false;}
+        System.out.println("horizontal Shift:" +horizontal_shift);
         if(Math.abs(horizontal_shift)==Math.abs(vertical_shift)) {
             int sign_of_vs=Integer.signum(vertical_shift);
             int sign_of_hs=Integer.signum(horizontal_shift);
@@ -43,7 +42,7 @@ public class Queen implements Piece {
         }
         else if(horizontal_shift == 0){
             System.out.println(vertical_shift);
-            for (int i = (int) (location[1]-Math.signum(vertical_shift)); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i-=Math.signum(vertical_shift)) {
+            for (int i = location[1]-Integer.signum(vertical_shift); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i-=Math.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
                     return false;
                 }
@@ -56,12 +55,13 @@ public class Queen implements Piece {
                 }
             }
         }
+        setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
         System.out.println("worked");
         return true;
     }
 
 /**
- * takes care of return a string arrayList of the queen's vision
+ * returns a string arrayList of the queen's vision
  * @param location initial space of the piece
  * @param board dictionary of the board
  * @return the vision of the queen piece !left to be done!
@@ -74,7 +74,7 @@ public class Queen implements Piece {
 
     @Override
     public boolean canMove(int[] location, Board board){
-        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override

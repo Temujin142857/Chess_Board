@@ -1,6 +1,6 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
 public interface Piece {
     /**
@@ -26,7 +26,7 @@ public interface Piece {
     int[] getLocation();
     void setLocation(int[] location);
     int[][] getVision(int[] location, Board board);
-    boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing);
+    boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing);
     boolean canMove(int[] location, Board board);
     boolean hasMoved();
     void setHasMoved(boolean value);

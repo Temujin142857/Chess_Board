@@ -1,9 +1,7 @@
-package Chess_Set_Folder;
+package Chess_Set;
 
-import Chess_Set_Folder.Pieces_Folder.EMPTY;
-import Chess_Set_Folder.Pieces_Folder.Piece;
-
-import java.util.HashMap;
+import Chess_Set.Pieces_Classes.EMPTY;
+import Chess_Set.Pieces_Classes.Piece;
 
 public class Board { //represents the game board
     final private String[][] WPIECENAMES ={new String[]{"WRook1","WKnight1","WBishop1","WQueen","WKing","WBishop2","WKnight2","WRook2"}, new String[]{"WPawn1","WPawn2","WPawn3","WPawn4","WPawn5","WPawn6","WPawn7","WPawn8"}}; //white pieces
@@ -40,18 +38,24 @@ public class Board { //represents the game board
     * @return boolean representing if move is made
     */
     public boolean move(int[] location1,int[] location2){
-        int horizontal_shift=location1[1]-location2[1];
-        int vertical_shift=location1[0]-location2[0];
-
+        int horizontal_shift=location2[0]-location1[0];
+        int vertical_shift=location2[1]-location1[1];
+        if(vertical_shift==0&&horizontal_shift==0){
+            System.out.println("Can't move a piece to the square it's already on");
+            return false;
+        }
         if(!isValidLocation(location1)||!isValidLocation(location2)){
             System.out.println("invalid location, board line 47");
+            return false;
+        }
+        if(at(location2).getName().charAt(0)==at(location1).getName().charAt(0)){
+            System.out.println("you can't capture your own piece");
             return false;
         }
         System.out.println("location1: "+location1[0]+","+location1[1]);
         System.out.println("at location1:"+at(location1).getName());
         if (at(location1).canMove(horizontal_shift,vertical_shift,location1,this,isPawnCapturing(location1,location2))&&!wouldBeCheck(location1,location2))
         {
-            at(location1).setHasMoved(true);
             board[location2[0]][location2[1]]=at(location1);
             board[location1[0]][location1[1]]=empty;
             System.out.println("location1: "+location1[0]+","+location1[1]);
@@ -60,7 +64,7 @@ public class Board { //represents the game board
             System.out.println("at location2:"+at(location2).getName());
             return true;
         }
-        System.out.println("illegal move line 562 board");
+        System.out.println("illegal move line 62 board");
         return false;
     }
 
@@ -115,9 +119,11 @@ public class Board { //represents the game board
 
         Piece[][] possible_board=new Piece[8][8];
         for (int i = 0; i < 8; i++) {
-           possible_board[i]=board[i].clone();
+            for (int j = 0; j < 8; j++) {
+                possible_board[i][j]=Piece.makePiece(this.at(i,j).getName(),new int[]{i,j});
+            }
         }
-        possible_board[location2[0]][location2[1]]=this.at(location1);
+        possible_board[location2[0]][location2[1]]=possible_board[location1[0]][location1[1]];
         possible_board[location1[0]][location1[1]]=empty;
         isCheck(findKing(colour),possible_board);
         return false;
@@ -131,6 +137,11 @@ public class Board { //represents the game board
             }
         }
         return result;
+    }
+
+    public void put(int[] location1, int[] location2){
+        board[location2[0]][location2[1]]=at(location1);
+        board[location1[0]][location1[1]]=empty;
     }
 
     /**
@@ -147,4 +158,7 @@ public class Board { //represents the game board
         return board[x][y]==empty;
     }
 
+    public Piece[][] getBoard() {
+        return board;
+    }
 }

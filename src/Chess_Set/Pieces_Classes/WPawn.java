@@ -1,13 +1,14 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
 
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
-public class Knight implements Piece {
+public class WPawn implements Piece {
+    private boolean hasMoved=false;
     private String name;
     private int[] location;
 
-    public Knight(String name, int[] location){
+    public WPawn(String name, int[] location){
         this.name=name;
         this.location=location;
     }
@@ -21,10 +22,10 @@ public class Knight implements Piece {
     }
 
     /**
-     * takes care of return a string arrayList of the knight's vision
+     * takes care of return a string arrayList of a wpiece's vision
      * @param location initial space of the piece
      * @param board dictionary of the board
-     * @return the vision of the knight piece !left to be done!
+     * @return the vision of the wpawn piece !left to be done!
      */
     @Override
     public int[][] getVision(int[] location, Board board){return null;}
@@ -38,16 +39,17 @@ public class Knight implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
-        horizontal_shift=Math.abs(horizontal_shift);
-        vertical_shift=Math.abs(vertical_shift);
-        if(horizontal_shift==2&&vertical_shift==1||horizontal_shift==1&&vertical_shift==2){return true;}
+    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){hasMoved=true;return true;}
+        if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==2){hasMoved=true;return true;}
+        if(!isCapturing&&horizontal_shift==0&&vertical_shift==1){hasMoved=true;return true;}
+        setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
         return false;
     }
 
     @Override
     public boolean canMove(int[] location, Board board){
-        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class Knight implements Piece {
     }
 
     public void setHasMoved(boolean value) {
-
+        hasMoved=value;
     }
 
     @Override

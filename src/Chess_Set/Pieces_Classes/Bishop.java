@@ -1,6 +1,6 @@
-package Chess_Set_Folder.Pieces_Folder;
+package Chess_Set.Pieces_Classes;
 
-import Chess_Set_Folder.Board;
+import Chess_Set.Board;
 
 
 public class Bishop implements Piece {
@@ -47,21 +47,20 @@ public class Bishop implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
+    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
         if(Math.abs(horizontal_shift)!=Math.abs(vertical_shift)){return false;}
-        int sign_of_vs=Integer.signum(vertical_shift);
-        int sign_of_hs=Integer.signum(horizontal_shift);
         int total_shift=1;
         while (total_shift<vertical_shift){
-            if(!board.isEmpty(location[0]+(total_shift*sign_of_hs),location[1]+(total_shift*sign_of_vs))){return false;}
+            if(!board.isEmpty(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift)))){return false;}
             total_shift++;
         }
+        setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
         return true;
     }
 
     @Override
     public boolean canMove(int[] location, Board board){
-        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override
