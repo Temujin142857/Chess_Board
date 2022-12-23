@@ -1,4 +1,7 @@
 # Chess_Engine
+
+##Special thanks to mostefaiii for design support during the construction fo the GUI. 
+
 ##Goal
 Build and optimise a program to play chess against a user.
 
