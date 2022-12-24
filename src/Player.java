@@ -20,6 +20,7 @@ public class Player { //sets the basics attributes of a player like color, and h
                 System.out.println(colour);
                 System.out.println(board.at(location1).getName().charAt(0));
                 System.out.println(board.at(location1).getName());
+                System.out.println(location1[0]+","+location1[1]);
                 System.out.println("wrong colour");
                 return false;
             }
