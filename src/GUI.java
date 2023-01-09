@@ -83,7 +83,6 @@ public class GUI {
                 JLabel label = new JLabel(new ImageIcon(img));
                 label.setSize(90, 90);
                 panels[i].add(label);
-                System.out.println(panels[i].getComponents().length);
             }
         }
     }
@@ -91,44 +90,33 @@ public class GUI {
     private class MouseListener implements java.awt.event.MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println(e.getComponent().getX()+","+e.getComponent().getY());
             int x=(e.getComponent().getX()- horizontal_shift_right)/width;
             int y=(e.getComponent().getY()-vertical_shift_down)/height;
-            if(isPieceHeld)System.out.println(pieceHeld[0]+","+pieceHeld[1]);
-            System.out.println(x+","+y);
-            if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};
-            }
-            else if (white_active){if(Wplayer.move(board, pieceHeld,new int[]{x,y})){
+            if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};System.out.println("Piece selected");}
+            else if (white_active){
+                if(Wplayer.move(board, pieceHeld,new int[]{x,y})){
                 isPieceHeld=false;white_active=false;
-                System.out.println("hi");
-                int i=0;
-                for (JPanel panel:panels) {
-                    System.out.println(i+":"+panel.getComponents().length);
-                    i++;
-                }
-                System.out.println(x*8+y);
-                System.out.println(pieceHeld[0]*8+pieceHeld[1]);
-                System.out.println(panels[pieceHeld[0]*8+pieceHeld[1]].getComponents().length);
                 if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
                 panels[x*8+y].add(panels[pieceHeld[0]*8+pieceHeld[1]].getComponent(0));
-                //panels[pieceHeld[0]*8+pieceHeld[1]].remove(0);
+                panels[x*8+y].updateUI();
+                panels[pieceHeld[0]*8+pieceHeld[1]].updateUI();
+                frame.pack();
+                }
+                else {isPieceHeld=false;System.out.println("Piece deselected");}
+            }
+            else {
+                if(Bplayer.move(board, pieceHeld,new int[]{x,y})){
+                isPieceHeld=false;white_active=true;
+                if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
+                panels[x*8+y].add(panels[pieceHeld[0]*8+pieceHeld[1]].getComponent(0));
                 panels[x*8+y].updateUI();
                 panels[pieceHeld[0]*8+pieceHeld[1]].updateUI();
                 frame.pack();
 
                 }
+                else {isPieceHeld=false;System.out.println("Piece deselected");}
             }
-            else {if(Bplayer.move(board, pieceHeld,new int[]{x,y})){
-                isPieceHeld=false;white_active=true;
-                System.out.println("hi");
-                if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
-                panels[x*8+y].add(panels[pieceHeld[0]*8+pieceHeld[1]].getComponent(0));
-                //panels[pieceHeld[0]*7+pieceHeld[1]].remove(0);
-                panels[x*8+y].updateUI();
-                panels[pieceHeld[0]*8+pieceHeld[1]].updateUI();
-                frame.pack();
-                }
-            }
+
         }
 
         @Override

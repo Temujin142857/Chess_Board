@@ -52,16 +52,16 @@ public class Board { //represents the game board
             System.out.println("you can't capture your own piece");
             return false;
         }
-        System.out.println("location1: "+location1[0]+","+location1[1]);
-        System.out.println("at location1:"+at(location1).getName());
+        //System.out.println("location1: "+location1[0]+","+location1[1]);
+        //System.out.println("at location1:"+at(location1).getName());
         if (at(location1).canMove(horizontal_shift,vertical_shift,location1,this,isPawnCapturing(location1,location2))&&!wouldBeCheck(location1,location2))
         {
             board[location2[0]][location2[1]]=at(location1);
             board[location1[0]][location1[1]]=empty;
-            System.out.println("location1: "+location1[0]+","+location1[1]);
-            System.out.println("at location1:"+at(location1).getName());
-            System.out.println("location2: "+location2[0]+","+location2[1]);
-            System.out.println("at location2:"+at(location2).getName());
+            //System.out.println("location1: "+location1[0]+","+location1[1]);
+            //System.out.println("at location1:"+at(location1).getName());
+            //System.out.println("location2: "+location2[0]+","+location2[1]);
+            //System.out.println("at location2:"+at(location2).getName());
             return true;
         }
         System.out.println("illegal move line 62 board");
@@ -70,6 +70,29 @@ public class Board { //represents the game board
 
     private boolean isPawnCapturing(int[] location1,int[] location2){
         return (at(location1).getName().charAt(1)=='P' && !at(location2).getName().equals("EMPTY"));
+    }
+
+    public boolean canMove(int[] location1,int[] location2){
+        int horizontal_shift=location2[0]-location1[0];
+        int vertical_shift=location2[1]-location1[1];
+        if(vertical_shift==0&&horizontal_shift==0){
+            System.out.println("Can't move a piece to the square it's already on");
+            return false;
+        }
+        if(!isValidLocation(location1)||!isValidLocation(location2)){
+            System.out.println("invalid location, board line 47");
+            return false;
+        }
+        if(at(location2).getName().charAt(0)==at(location1).getName().charAt(0)){
+            System.out.println("you can't capture your own piece");
+            return false;
+        }
+        //System.out.println("location1: "+location1[0]+","+location1[1]);
+        //System.out.println("at location1:"+at(location1).getName());
+        if (at(location1).canMove(horizontal_shift,vertical_shift,location1,this,isPawnCapturing(location1,location2))&&!wouldBeCheck(location1,location2)){
+            return true;
+        }
+        return false;
     }
 
     public boolean isValidLocation(int[] location){
@@ -102,6 +125,19 @@ public class Board { //represents the game board
                     && piece.canMove(location, this))
                 {
                     return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //doesnt work yet, looking for an efficient way to solve
+    public boolean isCheckmate(int[] location, Piece[][] board){
+        if(!isCheck(location,board))return false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(!board[i][j].getName().equals("EMPTY")){
+                    //if(wouldBeCheck())
                 }
             }
         }

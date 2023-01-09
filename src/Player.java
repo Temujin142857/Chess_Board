@@ -17,10 +17,7 @@ public class Player { //sets the basics attributes of a player like color, and h
         // if move is illegal player is prompted to select another move
             // if the player tries to move the wrong coloured piece
             if (board.at(location1[0],location1[1]).getName().charAt(0)!=colour){
-                System.out.println(colour);
                 System.out.println(board.at(location1).getName().charAt(0));
-                System.out.println(board.at(location1).getName());
-                System.out.println(location1[0]+","+location1[1]);
                 System.out.println("wrong colour");
                 return false;
             }
@@ -28,8 +25,6 @@ public class Player { //sets the basics attributes of a player like color, and h
                 System.out.println("succesful turn");
                 return true;
             }//try and make the move
-
-
         return false;
     }
 
