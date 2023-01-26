@@ -3,6 +3,7 @@
 ##Special thanks to mostefaiii for design support during the construction fo the GUI. 
 
 ##Goal
+Build a chessboard that lets two people play against each other
 Build and optimise a program to play chess against a user.
 
 ##Steps:
@@ -20,4 +21,4 @@ Build and optimise a program to play chess against a user.
 
 
 ##Current step
-Detecting checkmate, building the GUI, allowing en passant, indicator showing which piece is selected
+Detecting checkmate, allowing en passant, indicator showing which piece is selected
