@@ -1,12 +1,16 @@
 package Chess_Set.Pieces_Classes;
 
 
-import Chess_Set.Board;
+import Chess_Set.Game;
+
+import java.util.ArrayList;
 
 public class WPawn implements Piece {
     private boolean hasMoved=false;
     private String name;
     private int[] location;
+    private ArrayList<int[]> possibleMoves;
+    private ArrayList<int[]> blockedMoves;
 
     public WPawn(String name, int[] location){
         this.name=name;
@@ -14,42 +18,11 @@ public class WPawn implements Piece {
     }
 
     /**
-     * getter for name
+     * getters and setters
      */
     @Override
     public String getName() {
         return name;
-    }
-
-    /**
-     * takes care of return a string arrayList of a wpiece's vision
-     * @param location initial space of the piece
-     * @param board dictionary of the board
-     * @return the vision of the wpawn piece !left to be done!
-     */
-    @Override
-    public int[][] getVision(int[] location, Board board){return null;}
-
-    /**
-     * finds if a move is valid using the horizontal & vertical shift
-     * @param horizontal_shift horizontal shift trying to be applied.
-     * @param vertical_shift vertical shift trying to be applied.
-     * @param location location of the pawn.
-     * @param board dictionary of the board.
-     * @returns if a move is valid.
-     */
-    @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
-        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){hasMoved=true;return true;}
-        if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==2){hasMoved=true;return true;}
-        if(!isCapturing&&horizontal_shift==0&&vertical_shift==1){hasMoved=true;return true;}
-        setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
-        return false;
-    }
-
-    @Override
-    public boolean canMove(int[] location, Board board){
-        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override
@@ -71,5 +44,67 @@ public class WPawn implements Piece {
         for (int i = 0; i < location.length; i++) {
             this.location[i]=location[i];
         }
+    }
+
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
+    }
+
+
+    /**
+     * finds if a move is valid using the horizontal & vertical shift
+     * @param horizontal_shift horizontal shift trying to be applied.
+     * @param vertical_shift vertical shift trying to be applied.
+     * @param board dictionary of the board.
+     * @returns if a move is valid.
+     */
+    @Override
+    public boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){return true;}
+        if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==2&&board.isEmpty(location[0],3)&&board.isEmpty(location[0],2)){return true;}
+        if(!isCapturing&&horizontal_shift==0&&vertical_shift==1&&board.isEmpty(location[0],location[1]+1)){return true;}
+        return false;
+    }
+
+    @Override
+    public boolean canMove(int[] location, Game board){
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
+    }
+
+    @Override
+    public void updatePossibleMoves(Game board){
+        possibleMoves = new ArrayList<int[]>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (canMove(new int[]{i,j},board))possibleMoves.add(new int[]{i,j});
+            }
+        }
+    }
+
+    @Override
+    public void updateBlockedMoves(Game board) {
+        blockedMoves = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (isBlockedMove(new int[]{i,j},board))blockedMoves.add(new int[]{i,j});
+            }
+        }
+    }
+
+    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Game board) {
+        if(Math.abs(horizontal_shift)==1&&vertical_shift==1){return true;}
+        if(location[1]==6&&horizontal_shift==0&&vertical_shift==2&&!board.isEmpty(location[0],3)){return true;}
+        if(horizontal_shift==0&&vertical_shift==1&&!board.isEmpty(location[0],location[1]+1)){return true;}
+        return false;
+    }
+
+    private boolean isBlockedMove(int[] location, Game board){
+        return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board);
     }
 }

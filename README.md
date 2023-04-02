@@ -20,4 +20,5 @@ Build and optimise a program to play chess against a user.
 
 
 ##Current step
-Detecting checkmate, building the GUI, allowing en passant, indicator showing which piece is selected
+Detecting checkmate, allowing en passant, indicator showing which piece is selected
+Starting conception on 

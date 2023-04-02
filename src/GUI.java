@@ -1,4 +1,4 @@
-import Chess_Set.Board;
+import Chess_Set.Game;
 import Chess_Set.Pieces_Classes.Piece;
 
 
@@ -8,7 +8,6 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.*;
 import javax.imageio.ImageIO;
-import java.awt.Container;
 
 //make an empty chessboard out of panels, pieces will be buttons that sit on top of the panels
 //the buttons will turn transparent if they are empty squares, and display the appropriate picture otherwise
@@ -26,16 +25,17 @@ public class GUI {
     private Component labelHeld;
     private Player Wplayer;
     private Player Bplayer;
-    private Board board;
+    private Game board;
     public JPanel[] panels=new JPanel[65];
     private int width=90;
     private int height=90;
     private int horizontal_shift_right = 35;
     private int vertical_shift_down=35;
+    private boolean isCheckmate=false;
 
     private JFrame frame= new JFrame("Tomio's Chessboard");
 
-    public void play(Board board) throws IOException {
+    public void play(Game board) throws IOException {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(820,820));
         frame.pack();
@@ -67,7 +67,7 @@ public class GUI {
     //file path equals, "src/" + pieceName + ".png"
     //need to test if they same names for labels/images overrides them
     //seems like on board the pieces are ordered
-    private void initialise_pieces(Board board) throws IOException {
+    private void initialise_pieces(Game board) throws IOException {
         BufferedImage img;
         String pieceName;
         int i=-1;
@@ -94,29 +94,48 @@ public class GUI {
             int y=(e.getComponent().getY()-vertical_shift_down)/height;
             if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};System.out.println("Piece selected");}
             else if (white_active){
-                if(Wplayer.move(board, pieceHeld,new int[]{x,y})){
-                isPieceHeld=false;white_active=false;
-                if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
-                panels[x*8+y].add(panels[pieceHeld[0]*8+pieceHeld[1]].getComponent(0));
-                panels[x*8+y].updateUI();
-                panels[pieceHeld[0]*8+pieceHeld[1]].updateUI();
-                frame.pack();
+                int moveResult=Wplayer.move(board, pieceHeld,new int[]{x,y});
+                if(moveResult>0){
+                    isPieceHeld=false;white_active=false;
+                    if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
+                    moveAPieceToAnEmptySquare(pieceHeld,new int[]{x,y});
+                    frame.pack();
+                    if (board.isCheckmate(board.findKing('B'),board.getBoard())){
+                        System.out.println("checkmate");
+                        isCheckmate=true;
+                    }
+                    if (moveResult==2){//is castling
+                        moveAPieceToAnEmptySquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
+                    }
                 }
                 else {isPieceHeld=false;System.out.println("Piece deselected");}
             }
+
             else {
-                if(Bplayer.move(board, pieceHeld,new int[]{x,y})){
-                isPieceHeld=false;white_active=true;
-                if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
-                panels[x*8+y].add(panels[pieceHeld[0]*8+pieceHeld[1]].getComponent(0));
-                panels[x*8+y].updateUI();
-                panels[pieceHeld[0]*8+pieceHeld[1]].updateUI();
-                frame.pack();
-
+                int moveResult=Bplayer.move(board, pieceHeld,new int[]{x,y});
+                if(moveResult>0){
+                    isPieceHeld=false;white_active=true;
+                    if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
+                    moveAPieceToAnEmptySquare(pieceHeld,new int[]{x,y});
+                    frame.pack();
+                    if (board.isCheckmate(board.findKing('B'),board.getBoard())){
+                        System.out.println("checkmate");
+                        isCheckmate=true;
+                    }
+                    if (moveResult==2){//is castling
+                        moveAPieceToAnEmptySquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
+                    }
                 }
                 else {isPieceHeld=false;System.out.println("Piece deselected");}
             }
 
+        }
+
+        private void moveAPieceToAnEmptySquare(int[] originalLocation, int[] desiredLocation){
+            panels[desiredLocation[0]*8+desiredLocation[1]].add(panels[originalLocation[0]*8+originalLocation[1]].getComponent(0));
+            panels[desiredLocation[0]*8+desiredLocation[1]].updateUI();
+            panels[originalLocation[0]*8+originalLocation[1]].updateUI();
+            frame.pack();
         }
 
         @Override

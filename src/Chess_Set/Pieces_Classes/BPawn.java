@@ -1,11 +1,15 @@
 package Chess_Set.Pieces_Classes;
 
-import Chess_Set.Board;
+import Chess_Set.Game;
+
+import java.util.ArrayList;
 
 public class BPawn implements Piece {
     private boolean hasMoved=false;
     String name;
     private int[] location;
+    private ArrayList<int[]> possibleMoves;
+    private ArrayList<int[]> blockedMoves;
 
     public BPawn(String name, int[] location){
         this.name=name;
@@ -13,45 +17,11 @@ public class BPawn implements Piece {
     }
 
     /**
-     * getter for name
+     * getters and setters
      */
     @Override
     public String getName() {
         return name;
-    }
-
-    /**
-     * gets the vision of a BPawn
-     * @param location location of desired pawn
-     * @param board dictionary of pawn
-     * @return a stringArray that contains all the possible moves of a pawn
-     */
-    @Override
-    public int[][] getVision(int[] location, Board board) {
-        return null;
-    }
-
-    /**
-     * checks if the move is legal
-     * @param horizontal_shift the horizontal move desired
-     * @param vertical_shift the vertical move desired
-     * @param location location of the piece in question
-     * @param board the dictionary of the board
-     * @param isCapturing
-     * @return if the move is legal
-     */
-    @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
-        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){hasMoved=true;setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});return true;}
-        if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==-2){hasMoved=true;setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});return true;}
-        if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1){hasMoved=true;setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});return true;}
-        setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
-        return false;
-    }
-
-    @Override
-    public boolean canMove(int[] location, Board board){
-        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override
@@ -60,8 +30,8 @@ public class BPawn implements Piece {
     }
 
     @Override
-    public void setHasMoved(boolean value) {
-        hasMoved=value;
+    public void setHasMoved(boolean hasMoved){
+        this.hasMoved=hasMoved;
     }
 
     @Override
@@ -71,8 +41,69 @@ public class BPawn implements Piece {
 
     @Override
     public void setLocation(int[] location){
-        for (int i = 0; i < location.length; i++) {
-            this.location[i]=location[i];
+        System.arraycopy(location, 0, this.location, 0, location.length);
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+
+    /**
+     * checks if the move is legal
+     * @param horizontal_shift the horizontal move desired
+     * @param vertical_shift the vertical move desired
+     * @param board the dictionary of the board
+     * @param isCapturing
+     * @return if the move is legal
+     */
+    @Override
+    public boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){return true;}
+        if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==-2&&board.isEmpty(location[0],5)&& board.isEmpty(location[0],4)){return true;}
+        if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1&&board.isEmpty(location[0],location[1]-1)){return true;}
+        return false;
+    }
+
+    @Override
+    public boolean canMove(int[] location, Game board){
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
+    }
+
+    @Override
+    public void updatePossibleMoves(Game board){
+        possibleMoves = new ArrayList<int[]>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (canMove(new int[]{i,j},board))possibleMoves.add(new int[]{i,j});
+            }
         }
+    }
+
+    @Override
+    public void updateBlockedMoves(Game board){
+        blockedMoves = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (isBlockedMove(new int[]{i,j},board))blockedMoves.add(new int[]{i,j});
+            }
+        }
+    }
+
+    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Game board) {
+        if(Math.abs(horizontal_shift)==1&&vertical_shift==-1){return true;}
+        if(location[1]==6&&horizontal_shift==0&&vertical_shift==-2&&!board.isEmpty(location[0],7)){return true;}
+        if(horizontal_shift==0&&vertical_shift==-1&&!board.isEmpty(location[0],location[1]-1)){return true;}
+        return false;
+    }
+
+    private boolean isBlockedMove(int[] location, Game board){
+        return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board);
     }
 }

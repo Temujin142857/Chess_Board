@@ -1,4 +1,4 @@
-import Chess_Set.Board;
+import Chess_Set.Game;
 
 public class Player { //sets the basics attributes of a player like color, and handles all actions made by a player
     private char colour;
@@ -11,7 +11,7 @@ public class Player { //sets the basics attributes of a player like color, and h
         this.colour=colour;
     }
 
-    public boolean move(Board board,int[] location1,int[] location2){
+    public int move(Game board, int[] location1, int[] location2){
         // to be done
         // player selects a square to move to, a call is made to the board requesting to move
         // if move is illegal player is prompted to select another move
@@ -19,13 +19,9 @@ public class Player { //sets the basics attributes of a player like color, and h
             if (board.at(location1[0],location1[1]).getName().charAt(0)!=colour){
                 System.out.println(board.at(location1).getName().charAt(0));
                 System.out.println("wrong colour");
-                return false;
+                return 0;
             }
-            if (board.move(location1,location2)){
-                System.out.println("succesful turn");
-                return true;
-            }//try and make the move
-        return false;
+        return board.move(location1,location2);
     }
 
     public int[] getLocation(String location){
@@ -57,7 +53,7 @@ public class Player { //sets the basics attributes of a player like color, and h
         return result;
     }
 
-    public boolean isCheckmate(Board board){
+    public boolean isCheckmate(Game board){
         // use vision, to find if a player lost -> useful for the main.
         return false;
     }

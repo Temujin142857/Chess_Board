@@ -1,11 +1,15 @@
 package Chess_Set.Pieces_Classes;
 
-import Chess_Set.Board;
+import Chess_Set.Game;
+
+import java.util.ArrayList;
 
 public class King implements Piece {
     boolean hasMoved=false;
     private String name;
     private int[] location;
+    private ArrayList<int[]> possibleMoves;
+    private ArrayList<int[]> blockedMoves;
 
     public King(String name, int[] location){
         this.name=name;
@@ -13,67 +17,11 @@ public class King implements Piece {
     }
 
     /**
-     * getter for name
+     * getters and setters
      */
     @Override
     public String getName() {
         return name;
-    }
-
-    /**
-     * takes care of return a string arrayList of the king's vision
-     * @param location initial space of the piece
-     * @param board dictionary of the board
-     * @return the vision of the king piece !left to be done!
-     */
-    @Override
-    public int[][] getVision(int[] location, Board board){
-        int[][] vision=new int[8][1];
-        for (int i = 0; i < 8; i++) {
-
-        }
-        return null;
-    }
-
-    /**
-     * finds if a move is valid using the horizontal & vertical shift
-     * @param horizontal_shift horizontal shift trying to be applied.
-     * @param vertical_shift vertical shift trying to be applied.
-     * @param location location of the pawn.
-     * @param board dictionary of the board.
-     * @returns if a move is valid.
-     */
-    @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, int[] location, Board board, boolean isCapturing) {
-        if(Math.abs(horizontal_shift)<=1&& Math.abs(vertical_shift)<=1){
-            setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
-            hasMoved=true;
-            return true;
-        }
-        System.out.println(board.at(location[0]+horizontal_shift+Integer.signum(horizontal_shift),location[1]+vertical_shift).getName());
-        System.out.println(horizontal_shift);
-        System.out.println(location[0]+horizontal_shift+(Integer.signum(horizontal_shift)));
-        System.out.println(vertical_shift);
-        System.out.println(!hasMoved);
-        if(!(Math.abs(horizontal_shift)==2)||!(vertical_shift==0)){return false;}//makes sure castling is going to a valid square
-        if(((Math.signum(horizontal_shift)==1&&!board.at(7,location[1]).hasMoved())||(Integer.signum(horizontal_shift)==-1&&!board.at(0,location[1]).hasMoved()))&&!hasMoved){
-            for (int i = location[0]+Integer.signum(horizontal_shift); i!=location[0]+horizontal_shift+Integer.signum(horizontal_shift); i+=Integer.signum(horizontal_shift)) {
-                if (!board.isEmpty(i, location[1])) {
-                    return false;
-                }
-            }
-            hasMoved=true;
-            setLocation(new int[] {location[0]+horizontal_shift,location[1]+vertical_shift});
-            board.put(new int[]{(int) ((2+horizontal_shift)*1.75),location[1]},new int[]{location[0]+horizontal_shift+(Integer.signum(horizontal_shift)*-1),location[1]});
-            //wierd math in the line about just makes location 1's x coordinate 0 when horizontal shift is negative, and 7 when it's positive
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canMove(int[] location, Board board){
-        return canMove(location[0]-this.location[0],location[1]-this.location[1],location,board,true);
     }
 
     @Override
@@ -97,4 +45,65 @@ public class King implements Piece {
         }
     }
 
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
+    }
+
+    /**
+     * finds if a move is valid using the horizontal & vertical shift
+     * @param horizontal_shift horizontal shift trying to be applied.
+     * @param vertical_shift vertical shift trying to be applied.
+     * @param board dictionary of the board.
+     * @returns if a move is valid.
+     */
+    @Override
+    public boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+        //basic move
+        if(Math.abs(horizontal_shift)<=1&&Math.abs(vertical_shift)<=1&&board.wouldBeCheck(this.location,location)){
+            return true;
+        }
+
+        //castling
+        if(!(Math.abs(horizontal_shift)==2)||!(vertical_shift==0)){return false;}//makes sure castling is going to a valid square
+        if(((Math.signum(horizontal_shift)==1&&!board.at(7,location[1]).hasMoved())||(Integer.signum(horizontal_shift)==-1&&!board.at(0,location[1]).hasMoved()))&&!hasMoved){
+            for (int i = location[0]+Integer.signum(horizontal_shift); i!=location[0]+horizontal_shift+Integer.signum(horizontal_shift); i+=Integer.signum(horizontal_shift)) {
+                if (!board.isEmpty(i, location[1])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMove(int[] location, Game board){
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
+    }
+
+    @Override
+    public void updatePossibleMoves(Game board){
+        possibleMoves = new ArrayList<int[]>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (canMove(new int[]{i,j},board))possibleMoves.add(new int[]{i,j});
+            }
+        }
+    }
+
+    @Override
+    public void updateBlockedMoves(Game board){
+        blockedMoves=new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (canMove(new int[]{i,j},board)&&(board.wouldBeCheck(location,new int[]{i,j})||board.at(new int[]{i,j}).getName().charAt(0)==name.charAt(0)))blockedMoves.add(new int[]{i,j});
+            }
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package Chess_Set.Pieces_Classes;
 
-import Chess_Set.Board;
+import Chess_Set.Game;
+
+import java.util.ArrayList;
 
 /**
  * represents an empty piece, so every propriety is basically null.
@@ -8,6 +10,8 @@ import Chess_Set.Board;
 public class EMPTY implements Piece {
     private String name;
     private int[] location;
+    private ArrayList<int[]> possibleMoves;
+    private ArrayList<int[]> blockedMoves;
 
     public EMPTY(String name, int[] location){
         this.name=name;
@@ -20,19 +24,13 @@ public class EMPTY implements Piece {
     }
 
     @Override
-    public int[][] getVision(int[] location, Board board) {
-        return new int[0][];
-    }
-
-
-    @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, int[] location, Board board, boolean isCapturing) {
+    public boolean canMove(int vertical_shift, int horizontal_shift, Game board, boolean isCapturing) {
         return false;
     }
 
     @Override
-    public boolean canMove(int[] location, Board board){
-        return canMove(this.location[1]-location[1],this.location[0]-location[0],location,board,true);
+    public boolean canMove(int[] location, Game board){
+        return canMove(this.location[1]-location[1],this.location[0]-location[0],board,true);
     }
 
     @Override
@@ -40,6 +38,8 @@ public class EMPTY implements Piece {
         System.out.println("why");
         return true;
     }
+
+    @Override
     public void setHasMoved(boolean value) {
 
     }
@@ -56,4 +56,23 @@ public class EMPTY implements Piece {
         }
     }
 
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return null;
+    }
+
+    @Override
+    public void updatePossibleMoves(Game board){
+
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
+    }
+
+    @Override
+    public void updateBlockedMoves(Game board) {
+
+    }
 }
