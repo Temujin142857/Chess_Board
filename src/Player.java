@@ -1,4 +1,4 @@
-import Chess_Set.Game;
+import Chess_Set.Board;
 
 public class Player { //sets the basics attributes of a player like color, and handles all actions made by a player
     private char colour;
@@ -11,7 +11,7 @@ public class Player { //sets the basics attributes of a player like color, and h
         this.colour=colour;
     }
 
-    public int move(Game board, int[] location1, int[] location2){
+    public int move(Board board, int[] location1, int[] location2){
         // to be done
         // player selects a square to move to, a call is made to the board requesting to move
         // if move is illegal player is prompted to select another move
@@ -53,7 +53,7 @@ public class Player { //sets the basics attributes of a player like color, and h
         return result;
     }
 
-    public boolean isCheckmate(Game board){
+    public boolean isCheckmate(Board board){
         // use vision, to find if a player lost -> useful for the main.
         return false;
     }

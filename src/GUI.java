@@ -1,4 +1,4 @@
-import Chess_Set.Game;
+import Chess_Set.Board;
 import Chess_Set.Pieces_Classes.Piece;
 
 
@@ -8,6 +8,8 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.*;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
 //make an empty chessboard out of panels, pieces will be buttons that sit on top of the panels
 //the buttons will turn transparent if they are empty squares, and display the appropriate picture otherwise
@@ -25,7 +27,7 @@ public class GUI {
     private Component labelHeld;
     private Player Wplayer;
     private Player Bplayer;
-    private Game board;
+    private Board board;
     public JPanel[] panels=new JPanel[65];
     private int width=90;
     private int height=90;
@@ -35,19 +37,19 @@ public class GUI {
 
     private JFrame frame= new JFrame("Tomio's Chessboard");
 
-    public void play(Game board) throws IOException {
+    public void play(Board board) throws IOException {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(820,820));
         frame.pack();
         Wplayer=new Player('W');
         Bplayer=new Player('B');
         this.board=board;
-        initialise_squares();
-        initialise_pieces(board);
+        initialiseSquares();
+        initialisePieces(board);
         frame.setVisible(true);
     }
 
-    private void initialise_squares(){
+    private void initialiseSquares(){
         int x;
         int y;
         for (int i=0;i<65;i++) {
@@ -64,10 +66,11 @@ public class GUI {
         panels[64].setBackground(new Color(115,86,4));
     }
 
+
     //file path equals, "src/" + pieceName + ".png"
-    //need to test if they same names for labels/images overrides them
+    //need to test if the same names for labels/images overrides them
     //seems like on board the pieces are ordered
-    private void initialise_pieces(Game board) throws IOException {
+    private void initialisePieces(Board board) throws IOException {
         BufferedImage img;
         String pieceName;
         int i=-1;
@@ -87,56 +90,74 @@ public class GUI {
         }
     }
 
+    /**
+     * Listens for mouse clicks
+     * Stores the held piece, tries to move the held piece to a new square
+     * storing pieces as an x and y is a bit akward since panels is a one dimensional array
+     * but I need both values for the move function in board
+     * could make panels a two dimensional array, just using x*8+y works fine though
+     */
     private class MouseListener implements java.awt.event.MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             int x=(e.getComponent().getX()- horizontal_shift_right)/width;
             int y=(e.getComponent().getY()-vertical_shift_down)/height;
-            if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};System.out.println("Piece selected");}
+            if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};highlightBorder(panels[x*8+y]);System.out.println("Piece selected");return;}
             else if (white_active){
                 int moveResult=Wplayer.move(board, pieceHeld,new int[]{x,y});
-                if(moveResult>0){
+                if(moveResult>0){//not castling
                     isPieceHeld=false;white_active=false;
-                    if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
-                    moveAPieceToAnEmptySquare(pieceHeld,new int[]{x,y});
-                    frame.pack();
+                    moveAPieceToASquare(pieceHeld,new int[]{x,y});
                     if (board.isCheckmate(board.findKing('B'),board.getBoard())){
                         System.out.println("checkmate");
                         isCheckmate=true;
                     }
                     if (moveResult==2){//is castling
-                        moveAPieceToAnEmptySquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
+                        moveAPieceToASquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
                     }
                 }
-                else {isPieceHeld=false;System.out.println("Piece deselected");}
             }
-
-            else {
+            else if (!white_active){
                 int moveResult=Bplayer.move(board, pieceHeld,new int[]{x,y});
-                if(moveResult>0){
+                if(moveResult>0){//not castling
                     isPieceHeld=false;white_active=true;
-                    if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}
-                    moveAPieceToAnEmptySquare(pieceHeld,new int[]{x,y});
-                    frame.pack();
-                    if (board.isCheckmate(board.findKing('B'),board.getBoard())){
+                    if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}//if there is a piece on the square removes it
+                    moveAPieceToASquare(pieceHeld,new int[]{x,y});
+                    if (board.isCheckmate(board.findKing('W'),board.getBoard())){
                         System.out.println("checkmate");
                         isCheckmate=true;
                     }
                     if (moveResult==2){//is castling
-                        moveAPieceToAnEmptySquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
+                        moveAPieceToASquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
                     }
                 }
-                else {isPieceHeld=false;System.out.println("Piece deselected");}
             }
-
+            isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
         }
 
-        private void moveAPieceToAnEmptySquare(int[] originalLocation, int[] desiredLocation){
+        private void moveAPieceToASquare(int[] originalLocation, int[] desiredLocation){
+            //if there is a piece on the square removes it
+            if(panels[desiredLocation[0]*8+desiredLocation[1]].getComponents().length!=0){panels[desiredLocation[0]*8+desiredLocation[1]].remove(0);}
+            //moves the held piece to the now empty square
             panels[desiredLocation[0]*8+desiredLocation[1]].add(panels[originalLocation[0]*8+originalLocation[1]].getComponent(0));
             panels[desiredLocation[0]*8+desiredLocation[1]].updateUI();
             panels[originalLocation[0]*8+originalLocation[1]].updateUI();
             frame.pack();
         }
+
+        private void highlightBorder(JPanel panel){
+            Border compound;
+            Border line = BorderFactory.createLineBorder(Color.yellow);
+            compound = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
+            compound = BorderFactory.createCompoundBorder(compound,line);
+            panel.setBorder(compound);
+        }
+
+        private void unHighlightBorder(JPanel panel){
+            panel.setBorder(BorderFactory.createEmptyBorder());
+        }
+
+
 
         @Override
         public void mousePressed(MouseEvent e) {

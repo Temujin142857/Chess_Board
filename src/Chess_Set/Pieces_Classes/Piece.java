@@ -1,6 +1,6 @@
 package Chess_Set.Pieces_Classes;
 
-import Chess_Set.Game;
+import Chess_Set.Board;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public interface Piece {
      * @param board
      * @returns if a move is valid.
      */
-    boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing);
+    boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing);
 
     /**
      * Overloads the previous method
@@ -50,7 +50,7 @@ public interface Piece {
      * @param board
      * @return if a move is valid.
      */
-    boolean canMove(int[] location, Game board);
+    boolean canMove(int[] location, Board board);
 
 
     /**
@@ -58,14 +58,14 @@ public interface Piece {
      * that the piece can move to
      * @param board
      */
-    void updatePossibleMoves(Game board);
+    void updatePossibleMoves(Board board);
 
     /**
      *Checks all the squares on the board, and stores the ones
      *that the piece would be able to move to if there weren't pieces in the way
      * @param board
      */
-    void updateBlockedMoves(Game board);
+    void updateBlockedMoves(Board board);
 
 
 }

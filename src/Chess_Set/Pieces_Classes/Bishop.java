@@ -1,6 +1,6 @@
 package Chess_Set.Pieces_Classes;
 
-import Chess_Set.Game;
+import Chess_Set.Board;
 
 import java.util.ArrayList;
 
@@ -64,7 +64,7 @@ public class Bishop implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+    public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         if(Math.abs(horizontal_shift)!=Math.abs(vertical_shift)){return false;}
         int total_shift=1;
         while (total_shift<vertical_shift){
@@ -75,12 +75,12 @@ public class Bishop implements Piece {
     }
 
     @Override
-    public boolean canMove(int[] location, Game board){
+    public boolean canMove(int[] location, Board board){
         return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
     }
 
     @Override
-    public void updatePossibleMoves(Game board){
+    public void updatePossibleMoves(Board board){
         possibleMoves = new ArrayList<int[]>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -90,7 +90,7 @@ public class Bishop implements Piece {
     }
 
     @Override
-    public void updateBlockedMoves(Game board){
+    public void updateBlockedMoves(Board board){
         blockedMoves = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -99,7 +99,7 @@ public class Bishop implements Piece {
         }
     }
 
-    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         if(Math.abs(horizontal_shift)!=Math.abs(vertical_shift)){return false;}
         int total_shift=1;
         while (total_shift<vertical_shift){
@@ -109,7 +109,7 @@ public class Bishop implements Piece {
         return false;
     }
 
-    private boolean isBlockedMove(int[] location, Game board){
+    private boolean isBlockedMove(int[] location, Board board){
         return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
     }
 

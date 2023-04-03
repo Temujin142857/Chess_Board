@@ -1,7 +1,7 @@
 package Chess_Set.Pieces_Classes;
 
 
-import Chess_Set.Game;
+import Chess_Set.Board;
 
 import java.util.ArrayList;
 
@@ -65,7 +65,7 @@ public class WPawn implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+    public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==1){return true;}
         if(!isCapturing&&!hasMoved&&horizontal_shift==0&&vertical_shift==2&&board.isEmpty(location[0],3)&&board.isEmpty(location[0],2)){return true;}
         if(!isCapturing&&horizontal_shift==0&&vertical_shift==1&&board.isEmpty(location[0],location[1]+1)){return true;}
@@ -73,12 +73,12 @@ public class WPawn implements Piece {
     }
 
     @Override
-    public boolean canMove(int[] location, Game board){
+    public boolean canMove(int[] location, Board board){
         return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
     }
 
     @Override
-    public void updatePossibleMoves(Game board){
+    public void updatePossibleMoves(Board board){
         possibleMoves = new ArrayList<int[]>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -88,7 +88,7 @@ public class WPawn implements Piece {
     }
 
     @Override
-    public void updateBlockedMoves(Game board) {
+    public void updateBlockedMoves(Board board) {
         blockedMoves = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -97,14 +97,14 @@ public class WPawn implements Piece {
         }
     }
 
-    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Game board) {
+    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Board board) {
         if(Math.abs(horizontal_shift)==1&&vertical_shift==1){return true;}
         if(location[1]==6&&horizontal_shift==0&&vertical_shift==2&&!board.isEmpty(location[0],3)){return true;}
         if(horizontal_shift==0&&vertical_shift==1&&!board.isEmpty(location[0],location[1]+1)){return true;}
         return false;
     }
 
-    private boolean isBlockedMove(int[] location, Game board){
+    private boolean isBlockedMove(int[] location, Board board){
         return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board);
     }
 }

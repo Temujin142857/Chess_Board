@@ -1,7 +1,7 @@
 package Chess_Set.Pieces_Classes;
 
 
-import Chess_Set.Game;
+import Chess_Set.Board;
 
 import java.util.ArrayList;
 
@@ -66,7 +66,7 @@ public class Rook implements Piece {
      * @returns if a move is valid.
      */
     @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+    public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         if(horizontal_shift == 0){
             for (int i =location[1]+Integer.signum(vertical_shift); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i+=Integer.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
@@ -87,12 +87,12 @@ public class Rook implements Piece {
     }
 
     @Override
-    public boolean canMove(int[] location, Game board){
+    public boolean canMove(int[] location, Board board){
         return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
     }
 
     @Override
-    public void updatePossibleMoves(Game board){
+    public void updatePossibleMoves(Board board){
         possibleMoves = new ArrayList<int[]>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -102,7 +102,7 @@ public class Rook implements Piece {
     }
 
     @Override
-    public void updateBlockedMoves(Game board){
+    public void updateBlockedMoves(Board board){
         blockedMoves = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -111,7 +111,7 @@ public class Rook implements Piece {
         }
     }
 
-    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Game board, boolean isCapturing) {
+    private boolean isBlockedMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         if(horizontal_shift == 0){
             for (int i =location[1]+Integer.signum(vertical_shift); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i+=Integer.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
@@ -129,7 +129,7 @@ public class Rook implements Piece {
         return false;
     }
 
-    private boolean isBlockedMove(int[] location, Game board){
+    private boolean isBlockedMove(int[] location, Board board){
         return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
     }
 }

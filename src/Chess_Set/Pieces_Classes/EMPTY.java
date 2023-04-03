@@ -1,6 +1,6 @@
 package Chess_Set.Pieces_Classes;
 
-import Chess_Set.Game;
+import Chess_Set.Board;
 
 import java.util.ArrayList;
 
@@ -24,12 +24,12 @@ public class EMPTY implements Piece {
     }
 
     @Override
-    public boolean canMove(int vertical_shift, int horizontal_shift, Game board, boolean isCapturing) {
+    public boolean canMove(int vertical_shift, int horizontal_shift, Board board, boolean isCapturing) {
         return false;
     }
 
     @Override
-    public boolean canMove(int[] location, Game board){
+    public boolean canMove(int[] location, Board board){
         return canMove(this.location[1]-location[1],this.location[0]-location[0],board,true);
     }
 
@@ -62,7 +62,7 @@ public class EMPTY implements Piece {
     }
 
     @Override
-    public void updatePossibleMoves(Game board){
+    public void updatePossibleMoves(Board board){
 
     }
 
@@ -72,7 +72,7 @@ public class EMPTY implements Piece {
     }
 
     @Override
-    public void updateBlockedMoves(Game board) {
+    public void updateBlockedMoves(Board board) {
 
     }
 }
