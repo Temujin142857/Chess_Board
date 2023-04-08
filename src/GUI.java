@@ -82,7 +82,12 @@ public class GUI {
                     if (!Character.isDigit(c)){pieceName+=c;}
                 }
                 if (pieceName.equals("EMPTY"))continue;
-                img = ImageIO.read(new File("src/Chess_Set/Pieces_Images/" + pieceName + ".png"));
+                try {
+                    img = ImageIO.read(new File("src/Chess_Set/Pieces_Images/" + pieceName + ".png"));
+                }
+                catch(IOException e){
+                    img = ImageIO.read(new File("Pieces_Images/" + pieceName + ".png"));
+                }
                 JLabel label = new JLabel(new ImageIcon(img));
                 label.setSize(90, 90);
                 panels[i].add(label);

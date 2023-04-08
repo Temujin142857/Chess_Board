@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Chess_Board:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="renamed game to board&#10;made it so the selected piece is highlight&#10;fixed a bug that triggered castling with the knight as well as the king">
+    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="most things work, check is still wonky, but it's getting there">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Chess_Board_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/King.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/King.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Knight.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Knight.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Queen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Queen.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chess_Set/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Queen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +68,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -83,7 +82,7 @@
       <recent name="C:\Users\Temuj\IdeaProjects\Chess_Engine\src\Chess_Set_Folder\Pieces_Images" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JAR Application.Chess_Board.jar">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Chess_Board" />
@@ -98,8 +97,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Chess_Board.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Chess_Board_jar/Chess_Board.jar" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JAR Application.Chess_Board.jar" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.jester_the_tester" />
       </list>
@@ -219,7 +223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680500406664</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="most things work, check is still wonky, but it's getting there">
+      <created>1680980626472</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1680980626472</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -245,6 +256,7 @@
     <MESSAGE value="Cleaned up debug statements, added print lines to indicate when a piece is selected or deselected&#10;later replace those lines with some sort of indicator on the gui" />
     <MESSAGE value="Tons of updates, each piece now holds an array of possible moves, which makes previously long methods immediate, it also facilitates checking for check and checkamte, both of which can be done. &#10;castling works&#10;En passant still does not&#10;Promotion still does not" />
     <MESSAGE value="renamed game to board&#10;made it so the selected piece is highlight&#10;fixed a bug that triggered castling with the knight as well as the king" />
-    <option name="LAST_COMMIT_MESSAGE" value="renamed game to board&#10;made it so the selected piece is highlight&#10;fixed a bug that triggered castling with the knight as well as the king" />
+    <MESSAGE value="most things work, check is still wonky, but it's getting there" />
+    <option name="LAST_COMMIT_MESSAGE" value="most things work, check is still wonky, but it's getting there" />
   </component>
 </project>
