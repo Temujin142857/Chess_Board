@@ -14,7 +14,6 @@ public class Knight implements Piece {
     public Knight(String name, int[] location){
         this.name=name;
         this.location=location;
-
     }
 
     /**

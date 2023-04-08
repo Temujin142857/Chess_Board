@@ -65,7 +65,7 @@ public class King implements Piece {
     @Override
     public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         //basic move
-        if(Math.abs(horizontal_shift)<=1&&Math.abs(vertical_shift)<=1&&board.wouldBeCheck(this.location,location)){
+        if(Math.abs(horizontal_shift)<=1&&Math.abs(vertical_shift)<=1){
             return true;
         }
 

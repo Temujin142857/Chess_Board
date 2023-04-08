@@ -71,11 +71,13 @@ public class Queen implements Piece {
                 if(!board.isEmpty(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift)))){return false;}
                 total_shift++;
             }
+            return true;
         }
         //rook
         else if(horizontal_shift == 0){
             for (int i = location[1]+Integer.signum(vertical_shift); location[1]-Math.abs(vertical_shift) < i&&i < location[1]+Math.abs(vertical_shift); i+=Math.signum(vertical_shift)) {
                 if(!board.isEmpty(location[0],i)){
+                    System.out.println("y3o");
                     return false;
                 }
             }
@@ -84,11 +86,14 @@ public class Queen implements Piece {
         else if(vertical_shift == 0){
             for (int i = location[0]+Integer.signum(horizontal_shift); location[0]-Math.abs(horizontal_shift) < i&&i < location[0]+Math.abs(horizontal_shift); i+=Math.signum(horizontal_shift)) {
                 if(!board.isEmpty(i,location[1])){
+                    System.out.println("yo2");
                     return false;
                 }
             }
+
             return true;
         }
+        System.out.println("yo1");
         return false;
     }
 

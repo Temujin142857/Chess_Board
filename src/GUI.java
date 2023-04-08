@@ -20,22 +20,22 @@ import javax.swing.border.Border;
 //at some point changing the form updating method to not just scan everything would be nice
 //button names can be the piece names, following the same convention in the board class
 //square names can be integer coordinates, or chess notation
+//you can see the battle inside me on whether to solve problems with math or programming lol
 public class GUI {
     private boolean white_active=true;
     private boolean isPieceHeld;
     private int[] pieceHeld;
-    private Component labelHeld;
     private Player Wplayer;
     private Player Bplayer;
     private Board board;
     public JPanel[] panels=new JPanel[65];
-    private int width=90;
-    private int height=90;
-    private int horizontal_shift_right = 35;
-    private int vertical_shift_down=35;
+    private final int width=90;
+    private final int height=90;
+    private final int horizontal_shift_right = 35;
+    private final int vertical_shift_down=35;
     private boolean isCheckmate=false;
 
-    private JFrame frame= new JFrame("Tomio's Chessboard");
+    private final JFrame frame= new JFrame("Tomio's Chessboard");
 
     public void play(Board board) throws IOException {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,7 +74,7 @@ public class GUI {
         BufferedImage img;
         String pieceName;
         int i=-1;
-        for (Piece[] columns:board.getBoard()) {
+        for (Piece[] columns:board.getPieces()) {
             for (Piece piece:columns) {
                 i++;
                 pieceName="";
@@ -100,6 +100,7 @@ public class GUI {
     private class MouseListener implements java.awt.event.MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
+            if(isCheckmate){return;}
             int x=(e.getComponent().getX()- horizontal_shift_right)/width;
             int y=(e.getComponent().getY()-vertical_shift_down)/height;
             if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};highlightBorder(panels[x*8+y]);System.out.println("Piece selected");return;}
@@ -108,7 +109,7 @@ public class GUI {
                 if(moveResult>0){//not castling
                     isPieceHeld=false;white_active=false;
                     moveAPieceToASquare(pieceHeld,new int[]{x,y});
-                    if (board.isCheckmate(board.findKing('B'),board.getBoard())){
+                    if (board.isCheckmate(board.findKing('B'),board)){
                         System.out.println("checkmate");
                         isCheckmate=true;
                     }
@@ -117,13 +118,13 @@ public class GUI {
                     }
                 }
             }
-            else if (!white_active){
+            else {
                 int moveResult=Bplayer.move(board, pieceHeld,new int[]{x,y});
                 if(moveResult>0){//not castling
                     isPieceHeld=false;white_active=true;
                     if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}//if there is a piece on the square removes it
                     moveAPieceToASquare(pieceHeld,new int[]{x,y});
-                    if (board.isCheckmate(board.findKing('W'),board.getBoard())){
+                    if (board.isCheckmate(board.findKing('W'),board)){
                         System.out.println("checkmate");
                         isCheckmate=true;
                     }
@@ -133,6 +134,11 @@ public class GUI {
                 }
             }
             isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
+            if(isCheckmate){endGame();}
+        }
+
+        private void endGame(){
+            System.out.println("lol, someone lost");
         }
 
         private void moveAPieceToASquare(int[] originalLocation, int[] desiredLocation){
