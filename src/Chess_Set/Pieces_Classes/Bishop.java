@@ -67,7 +67,8 @@ public class Bishop implements Piece {
     public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
         if(Math.abs(horizontal_shift)!=Math.abs(vertical_shift)){return false;}
         int total_shift=1;
-        while (total_shift<vertical_shift){
+        while (total_shift<Math.abs(vertical_shift)){
+            System.out.println(total_shift);
             if(!board.isEmpty(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift)))){return false;}
             total_shift++;
         }

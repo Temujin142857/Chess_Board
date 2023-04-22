@@ -74,8 +74,8 @@ public class Board { //represents the game board
             at(location1).setHasMoved(true);
             boolean castling=isCastling(location1,location2);
             if(castling){
-                System.out.println("nice castle, line 73");
                 at(location1).setLocation(location2);
+                //castling assumes the king was clicked, so the rook has to be found
                 int[] rookLocation=new int[]{(int)(1.75*(location2[0]-2)),location1[1]};
                 int[] newRookLocation=new int[]{location2[0]+Integer.signum(location1[0]-location2[0]),location2[1]};
                 at(rookLocation).setHasMoved(true);
@@ -119,6 +119,166 @@ public class Board { //represents the game board
         }
         return false;
     }
+
+
+    public boolean isValidLocation(int[] location){
+        for (int coord:location) {
+            if(coord<0||coord>7){return false;}
+        }
+        return true;
+    }
+
+    //add a method named would king be in check, loops through every piece on the board, checks if they could move to the given square
+
+    /**
+     * takes the kingLocation of the king and checks if any pieces are attacking it
+     * @param kingLocation the kingLocation of the king
+     * @return
+     */
+    public boolean isCheck(int[] kingLocation, Board board){
+        for (Piece[] pieces:board.getPieces()){
+            for (Piece piece:pieces) {
+                if (!piece.getName().equals("EMPTY") //doesn't check empty pieces
+                    && piece.getName().charAt(0)!=board.at(kingLocation).getName().charAt(0) //only checks pieces the opposite colour as the king
+                    && piece.canMove(kingLocation, board))
+                {
+                    System.out.println("piece at "+piece.getLocation()[0]+", "+piece.getLocation()[1]);
+                    System.out.println("piece that is checking:"+piece.getName());
+                    System.out.println(at(kingLocation).getName());
+                    System.out.println("ischeck");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public boolean isCheckmate(int[] location, Board board) {
+        Piece[][] pieces=board.getPieces();
+        if (!isCheck(location, board)) return false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (!pieces[i][j].getName().equals("EMPTY")) {
+                    for (int[] move : pieces[i][j].getPossibleMoves()) {
+                        if (!wouldBeCheck(new int[]{i, j}, move)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * makes the move, checks if the king of the player who would make the move is in check
+     * @param location1
+     * @param location2
+     * @return
+     */
+    public boolean wouldBeCheck(int[] location1, int[] location2){
+        char colour=at(location1).getName().charAt(0);
+
+        Piece[][] possible_board=new Piece[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                possible_board[i][j]=Piece.makePiece(this.at(i,j).getName(),new int[]{i,j});
+            }
+        }
+        Board board2=new Board(possible_board);
+        board2.moveWithoutCheck(location1,location2);
+        System.out.println("made it this far");
+        return isCheck(board2.findKing(colour),board2);
+    }
+
+
+    public int moveWithoutCheck(int[] location1, int[] location2){
+        int horizontal_shift=location2[0]-location1[0];
+        int vertical_shift=location2[1]-location1[1];
+        if(vertical_shift==0&&horizontal_shift==0){
+            System.out.println("Can't move a piece to the square it's already on");
+            return 0;
+        }
+        if(!isValidLocation(location1)||!isValidLocation(location2)){
+            System.out.println("invalid location, board line 47");
+            return 0;
+        }
+        if(at(location2).getName().charAt(0)==at(location1).getName().charAt(0)){
+            System.out.println("you can't capture your own piece");
+            return 0;
+        }
+
+        if (at(location1).canMove(horizontal_shift,vertical_shift,this,isPawnCapturing(location1,location2)))
+        {
+            at(location1).setHasMoved(true);
+            boolean castling=isCastling(location1,location2);
+            if(castling){
+                at(location1).setLocation(location2);
+                //castling assumes the king was clicked, so the rook has to be found
+                int[] rookLocation=new int[]{(int)(1.75*(location2[0]-2)),location1[1]};
+                int[] newRookLocation=new int[]{location2[0]+Integer.signum(location1[0]-location2[0]),location2[1]};
+                at(rookLocation).setHasMoved(true);
+                at(rookLocation).setLocation(newRookLocation);
+                pieces[location2[0]][location2[1]]=at(location1);
+                pieces[newRookLocation[0]][newRookLocation[1]]=at(rookLocation);
+                pieces[location1[0]][location1[1]]=empty;
+                pieces[rookLocation[0]][rookLocation[1]]=empty;
+            }
+            else{
+                at(location1).setLocation(location2);
+                pieces[location2[0]][location2[1]]=at(location1);
+            }
+            pieces[location1[0]][location1[1]]=empty;
+            if (castling){return 2;}
+            return 1;
+        }
+        System.out.println(pieces[location1[0]][location1[1]].getName());
+        return 0;
+    }
+
+
+    public int[] findKing(char colour){
+        int[] result = null;
+        for (Piece[] column: pieces) {
+            for (Piece piece:column) {
+                if (piece.getName().equals(colour+"King"))result= piece.getLocation();
+            }
+        }
+        return result;
+    }
+
+    public void put(int[] location1, int[] location2){
+        pieces[location2[0]][location2[1]]=at(location1);
+        pieces[location1[0]][location1[1]]=empty;
+    }
+
+    /**
+     * Checks if a location on board is empty or not
+     * @param location location desired to be checked
+     * @return if location is empty or not
+     */
+    public boolean isEmpty(int[] location){
+        return pieces[location[0]][location[1]]==empty;
+    }
+
+    public boolean isEmpty(int x, int y){
+        return pieces[x][y]==empty;
+    }
+
+    public Piece[][] getPieces() {
+        return pieces;
+    }
+
+    public Piece at(int[] location){
+        return pieces[location[0]][location[1]];
+    }
+
+    public Piece at(int x, int y){
+        return pieces[x][y];
+    }
+
+    //potentially useful deprecated code
 
     /**
      * returns the square the rook should go to
@@ -169,114 +329,5 @@ public class Board { //represents the game board
             return true;
         }
         return false;
-    }
-
-    public boolean isValidLocation(int[] location){
-        for (int coord:location) {
-            if(coord<0||coord>7){return false;}
-        }
-        return true;
-    }
-
-    public Piece at(int[] location){
-        return pieces[location[0]][location[1]];
-    }
-
-    public Piece at(int x, int y){
-        return pieces[x][y];
-    }
-
-    //add a method named would king be in check, loops through every piece on the board, checks if they could move to the given square
-
-    /**
-     * takes the kingLocation of the king and checks if any pieces are attacking it
-     * @param kingLocation the kingLocation of the king
-     * @return
-     */
-    public boolean isCheck(int[] kingLocation, Board board){
-        for (Piece[] pieces:board.getPieces()){
-            for (Piece piece:pieces) {
-                if (!piece.getName().equals("EMPTY") //doesn't check empty pieces
-                    && piece.getName().charAt(0)!=at(kingLocation).getName().charAt(0) //only checks pieces the opposite colour as the king
-                    && piece.canMove(kingLocation, this))
-                {
-                    System.out.println(at(kingLocation).getName().charAt(0)+"" + piece.getName().charAt(0));
-                    System.out.println(piece.getName());
-                    System.out.println("ischeck");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    public boolean isCheckmate(int[] location, Board board) {
-        Piece[][] pieces=board.getPieces();
-        if (!isCheck(location, board)) return false;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (!pieces[i][j].getName().equals("EMPTY")) {
-                    for (int[] move : pieces[i][j].getPossibleMoves()) {
-                        if (!wouldBeCheck(new int[]{i, j}, move)) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * makes the move, checks if the king of the player who would make the move is in check
-     * @param location1
-     * @param location2
-     * @return
-     */
-    public boolean wouldBeCheck(int[] location1,int[] location2){
-        char colour=at(location1).getName().charAt(0);
-
-        Piece[][] possible_board=new Piece[8][8];
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                possible_board[i][j]=Piece.makePiece(this.at(i,j).getName(),new int[]{i,j});
-            }
-        }
-        possible_board[location2[0]][location2[1]]=possible_board[location1[0]][location1[1]];
-        possible_board[location1[0]][location1[1]]=empty;
-        return isCheck(findKing(colour),new Board(possible_board));
-    }
-
-    public int[] findKing(char colour){
-        int[] result = null;
-        for (Piece[] column: pieces) {
-            for (Piece piece:column) {
-                if (piece.getName().equals(colour+"King"))result= piece.getLocation();
-            }
-        }
-        return result;
-    }
-
-    public void put(int[] location1, int[] location2){
-        pieces[location2[0]][location2[1]]=at(location1);
-        pieces[location1[0]][location1[1]]=empty;
-    }
-
-    /**
-     * Checks if a location on board is empty or not
-     * @param location location desired to be checked
-     * @return if location is empty or not
-     */
-    public boolean isEmpty(int[] location){
-        return pieces[location[0]][location[1]]==empty;
-    }
-
-    public boolean isEmpty(int x, int y){
-        return pieces[x][y]==empty;
-    }
-
-    public Piece[][] getPieces() {
-        return pieces;
     }
 }

@@ -16,7 +16,7 @@ import javax.swing.border.Border;
 //alternatively if I make a set of pieces on the appropriate background I can just change the panel
 //on second click, data is sent to player, via it's move class
 //get location in the player object can be used to turn a string of the form e4, or d5, ect, into an int array
-//upon recieving confirmation that the move was made it flips the white_active boolean, and updates the form
+//upon receiving confirmation that the move was made it flips the white_active boolean, and updates the form
 //at some point changing the form updating method to not just scan everything would be nice
 //button names can be the piece names, following the same convention in the board class
 //square names can be integer coordinates, or chess notation
@@ -140,6 +140,7 @@ public class GUI {
             }
             isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
             if(isCheckmate){endGame();}
+            System.out.println("finished");
         }
 
         private void endGame(){

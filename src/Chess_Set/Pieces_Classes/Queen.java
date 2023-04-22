@@ -67,7 +67,7 @@ public class Queen implements Piece {
         if(Math.abs(horizontal_shift)==Math.abs(vertical_shift)) {
             int total_shift=1;
             System.out.println(location[0]+","+location[1]);
-            while (total_shift<vertical_shift){
+            while (total_shift<Math.abs(vertical_shift)){
                 if(!board.isEmpty(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift)))){return false;}
                 total_shift++;
             }
