@@ -9,15 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="added a jar file, moved images and adjusted the loading of said images so that it works from the jar files location">
+    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="continued debugging check">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Bishop.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Bishop.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Queen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Queen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Chess_Set/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/Queen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +237,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680991744264</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="continued debugging check">
+      <created>1682130123437</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1682130123437</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -267,6 +272,7 @@
     <MESSAGE value="renamed game to board&#10;made it so the selected piece is highlight&#10;fixed a bug that triggered castling with the knight as well as the king" />
     <MESSAGE value="most things work, check is still wonky, but it's getting there" />
     <MESSAGE value="added a jar file, moved images and adjusted the loading of said images so that it works from the jar files location" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a jar file, moved images and adjusted the loading of said images so that it works from the jar files location" />
+    <MESSAGE value="continued debugging check" />
+    <option name="LAST_COMMIT_MESSAGE" value="continued debugging check" />
   </component>
 </project>

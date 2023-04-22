@@ -73,8 +73,8 @@ public class Board { //represents the game board
         {
             at(location1).setHasMoved(true);
             boolean castling=isCastling(location1,location2);
+            at(location1).setLocation(location2);
             if(castling){
-                at(location1).setLocation(location2);
                 //castling assumes the king was clicked, so the rook has to be found
                 int[] rookLocation=new int[]{(int)(1.75*(location2[0]-2)),location1[1]};
                 int[] newRookLocation=new int[]{location2[0]+Integer.signum(location1[0]-location2[0]),location2[1]};
@@ -86,7 +86,6 @@ public class Board { //represents the game board
                 pieces[rookLocation[0]][rookLocation[1]]=empty;
             }
             else{
-                at(location1).setLocation(location2);
                 pieces[location2[0]][location2[1]]=at(location1);
             }
             pieces[location1[0]][location1[1]]=empty;
@@ -101,7 +100,7 @@ public class Board { //represents the game board
             if (castling){return 2;}
             return 1;
         }
-        System.out.println("illegal move line 100 board");
+        System.out.println("illegal move line 103 board");
         System.out.println(pieces[location1[0]][location1[1]].getName());
         return 0;
     }
@@ -179,7 +178,7 @@ public class Board { //represents the game board
      */
     public boolean wouldBeCheck(int[] location1, int[] location2){
         char colour=at(location1).getName().charAt(0);
-
+        System.out.println("colour to check: "+colour);
         Piece[][] possible_board=new Piece[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -213,8 +212,8 @@ public class Board { //represents the game board
         {
             at(location1).setHasMoved(true);
             boolean castling=isCastling(location1,location2);
+            at(location1).setLocation(location2);
             if(castling){
-                at(location1).setLocation(location2);
                 //castling assumes the king was clicked, so the rook has to be found
                 int[] rookLocation=new int[]{(int)(1.75*(location2[0]-2)),location1[1]};
                 int[] newRookLocation=new int[]{location2[0]+Integer.signum(location1[0]-location2[0]),location2[1]};
@@ -226,7 +225,6 @@ public class Board { //represents the game board
                 pieces[rookLocation[0]][rookLocation[1]]=empty;
             }
             else{
-                at(location1).setLocation(location2);
                 pieces[location2[0]][location2[1]]=at(location1);
             }
             pieces[location1[0]][location1[1]]=empty;
@@ -239,13 +237,12 @@ public class Board { //represents the game board
 
 
     public int[] findKing(char colour){
-        int[] result = null;
         for (Piece[] column: pieces) {
             for (Piece piece:column) {
-                if (piece.getName().equals(colour+"King"))result= piece.getLocation();
+                if (piece.getName().equals(colour+"King")){return piece.getLocation();}
             }
         }
-        return result;
+        return null;
     }
 
     public void put(int[] location1, int[] location2){

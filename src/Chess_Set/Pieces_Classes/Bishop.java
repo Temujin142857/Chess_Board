@@ -68,10 +68,13 @@ public class Bishop implements Piece {
         if(Math.abs(horizontal_shift)!=Math.abs(vertical_shift)){return false;}
         int total_shift=1;
         while (total_shift<Math.abs(vertical_shift)){
-            System.out.println(total_shift);
-            if(!board.isEmpty(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift)))){return false;}
+            System.out.println("square: "+(location[0]+(total_shift*Integer.signum(horizontal_shift)))+","+(location[1]+(total_shift*Integer.signum(vertical_shift))));
+            System.out.println("piece on that square: "+board.at(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift))));
+            if(!board.isEmpty(location[0]+(total_shift*Integer.signum(horizontal_shift)),location[1]+(total_shift*Integer.signum(vertical_shift)))){
+                System.out.println("failed");return false;}
             total_shift++;
         }
+        System.out.println("true");
         return true;
     }
 
