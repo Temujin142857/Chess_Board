@@ -18,46 +18,6 @@ public class WPawn implements Piece {
     }
 
     /**
-     * getters and setters
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return true;
-    }
-
-    public void setHasMoved(boolean value) {
-        hasMoved=value;
-    }
-
-    @Override
-    public int[] getLocation(){
-        return this.location;
-    }
-
-    @Override
-    public void setLocation(int[] location){
-        for (int i = 0; i < location.length; i++) {
-            this.location[i]=location[i];
-        }
-    }
-
-    @Override
-    public ArrayList<int[]> getPossibleMoves() {
-        return possibleMoves;
-    }
-
-    @Override
-    public ArrayList<int[]> getBlockedMoves() {
-        return blockedMoves;
-    }
-
-
-    /**
      * finds if a move is valid using the horizontal & vertical shift
      * @param horizontal_shift horizontal shift trying to be applied.
      * @param vertical_shift vertical shift trying to be applied.
@@ -106,5 +66,44 @@ public class WPawn implements Piece {
 
     private boolean isBlockedMove(int[] location, Board board){
         return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board);
+    }
+
+    /**
+     * getters and setters
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return true;
+    }
+
+    public void setHasMoved(boolean value) {
+        hasMoved=value;
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        for (int i = 0; i < location.length; i++) {
+            this.location[i]=location[i];
+        }
+    }
+
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
     }
 }

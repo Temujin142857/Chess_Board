@@ -17,45 +17,6 @@ public class BPawn implements Piece {
     }
 
     /**
-     * getters and setters
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return true;
-    }
-
-    @Override
-    public void setHasMoved(boolean hasMoved){
-        this.hasMoved=hasMoved;
-    }
-
-    @Override
-    public int[] getLocation(){
-        return this.location;
-    }
-
-    @Override
-    public void setLocation(int[] location){
-        System.arraycopy(location, 0, this.location, 0, location.length);
-    }
-
-    @Override
-    public ArrayList<int[]> getBlockedMoves() {
-        return blockedMoves;
-    }
-
-    @Override
-    public ArrayList<int[]> getPossibleMoves() {
-        return possibleMoves;
-    }
-
-
-    /**
      * checks if the move is legal
      * @param horizontal_shift the horizontal move desired
      * @param vertical_shift the vertical move desired
@@ -106,4 +67,43 @@ public class BPawn implements Piece {
     private boolean isBlockedMove(int[] location, Board board){
         return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board);
     }
+
+    /**
+     * getters and setters
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return true;
+    }
+
+    @Override
+    public void setHasMoved(boolean hasMoved){
+        this.hasMoved=hasMoved;
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        System.arraycopy(location, 0, this.location, 0, location.length);
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
 }

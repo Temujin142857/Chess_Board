@@ -22,18 +22,6 @@ public interface Piece {
  }
 
     /**
-     * getters and setters
-     */
-    String getName();
-    int[] getLocation();
-    void setLocation(int[] location);
-    boolean hasMoved();
-    void setHasMoved(boolean hasMoved);
-    ArrayList<int[]> getPossibleMoves();
-    ArrayList<int[]> getBlockedMoves();
-
-
-    /**
      * finds if a move is valid using the horizontal & vertical shift
      * with the class updated to also store it's own location, can now overload this method
      * to accept just the square it's being asked to move to, and the game board
@@ -66,6 +54,17 @@ public interface Piece {
      * @param board
      */
     void updateBlockedMoves(Board board);
+
+    /**
+     * getters and setters
+     */
+    String getName();
+    int[] getLocation();
+    void setLocation(int[] location);
+    boolean hasMoved();
+    void setHasMoved(boolean hasMoved);
+    ArrayList<int[]> getPossibleMoves();
+    ArrayList<int[]> getBlockedMoves();
 
 
 }

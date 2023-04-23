@@ -18,46 +18,6 @@ public class Rook implements Piece {
     }
 
     /**
-     * getters and setters
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int[] getLocation(){
-        return this.location;
-    }
-
-    @Override
-    public void setLocation(int[] location){
-        for (int i = 0; i < location.length; i++) {
-            this.location[i]=location[i];
-        }
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    @Override
-    public void setHasMoved(boolean value) {
-        hasMoved=value;
-    }
-
-    @Override
-    public ArrayList<int[]> getPossibleMoves() {
-        return possibleMoves;
-    }
-
-    @Override
-    public ArrayList<int[]> getBlockedMoves() {
-        return blockedMoves;
-    }
-
-    /**
      * finds if a move is valid using the horizontal & vertical shift
      * @param horizontal_shift horizontal shift trying to be applied.
      * @param vertical_shift vertical shift trying to be applied.
@@ -131,5 +91,45 @@ public class Rook implements Piece {
 
     private boolean isBlockedMove(int[] location, Board board){
         return isBlockedMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
+    }
+
+    /**
+     * getters and setters
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        for (int i = 0; i < location.length; i++) {
+            this.location[i]=location[i];
+        }
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    @Override
+    public void setHasMoved(boolean value) {
+        hasMoved=value;
+    }
+
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
     }
 }

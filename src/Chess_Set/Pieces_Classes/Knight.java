@@ -17,6 +17,42 @@ public class Knight implements Piece {
     }
 
     /**
+     * finds if a move is valid using the horizontal & vertical shift
+     * @param horizontal_shift horizontal shift trying to be applied.
+     * @param vertical_shift vertical shift trying to be applied.
+     * @param board dictionary of the board.
+     * @returns if a move is valid.
+     */
+    @Override
+    public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
+        horizontal_shift=Math.abs(horizontal_shift);
+        vertical_shift=Math.abs(vertical_shift);
+        if(horizontal_shift==2&&vertical_shift==1||horizontal_shift==1&&vertical_shift==2){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canMove(int[] location, Board board){
+        return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
+    }
+
+    @Override
+    public void updatePossibleMoves(Board board){
+        possibleMoves = new ArrayList<int[]>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (canMove(new int[]{i,j},board))possibleMoves.add(new int[]{i,j});
+            }
+        }
+    }
+
+    @Override
+    public void updateBlockedMoves(Board board){
+    }
+
+    /**
      * getters and setters
      */
     @Override
@@ -52,41 +88,5 @@ public class Knight implements Piece {
     @Override
     public ArrayList<int[]> getBlockedMoves() {
         return blockedMoves;
-    }
-
-    /**
-     * finds if a move is valid using the horizontal & vertical shift
-     * @param horizontal_shift horizontal shift trying to be applied.
-     * @param vertical_shift vertical shift trying to be applied.
-     * @param board dictionary of the board.
-     * @returns if a move is valid.
-     */
-    @Override
-    public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
-        horizontal_shift=Math.abs(horizontal_shift);
-        vertical_shift=Math.abs(vertical_shift);
-        if(horizontal_shift==2&&vertical_shift==1||horizontal_shift==1&&vertical_shift==2){
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canMove(int[] location, Board board){
-        return canMove(location[0]-this.location[0],location[1]-this.location[1],board,true);
-    }
-
-    @Override
-    public void updatePossibleMoves(Board board){
-        possibleMoves = new ArrayList<int[]>();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (canMove(new int[]{i,j},board))possibleMoves.add(new int[]{i,j});
-            }
-        }
-    }
-
-    @Override
-    public void updateBlockedMoves(Board board){
     }
 }

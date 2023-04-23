@@ -17,45 +17,6 @@ public class King implements Piece {
     }
 
     /**
-     * getters and setters
-     */
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean hasMoved() {
-        return false;
-    }
-
-    public void setHasMoved(boolean value) {
-        hasMoved=value;
-    }
-
-    @Override
-    public int[] getLocation(){
-        return this.location;
-    }
-
-    @Override
-    public void setLocation(int[] location){
-        for (int i = 0; i < location.length; i++) {
-            this.location[i]=location[i];
-        }
-    }
-
-    @Override
-    public ArrayList<int[]> getPossibleMoves() {
-        return possibleMoves;
-    }
-
-    @Override
-    public ArrayList<int[]> getBlockedMoves() {
-        return blockedMoves;
-    }
-
-    /**
      * finds if a move is valid using the horizontal & vertical shift
      * @param horizontal_shift horizontal shift trying to be applied.
      * @param vertical_shift vertical shift trying to be applied.
@@ -105,5 +66,44 @@ public class King implements Piece {
                 if (canMove(new int[]{i,j},board)&&(board.wouldBeCheck(location,new int[]{i,j})||board.at(new int[]{i,j}).getName().charAt(0)==name.charAt(0)))blockedMoves.add(new int[]{i,j});
             }
         }
+    }
+
+    /**
+     * getters and setters
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean hasMoved() {
+        return false;
+    }
+
+    public void setHasMoved(boolean value) {
+        hasMoved=value;
+    }
+
+    @Override
+    public int[] getLocation(){
+        return this.location;
+    }
+
+    @Override
+    public void setLocation(int[] location){
+        for (int i = 0; i < location.length; i++) {
+            this.location[i]=location[i];
+        }
+    }
+
+    @Override
+    public ArrayList<int[]> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    @Override
+    public ArrayList<int[]> getBlockedMoves() {
+        return blockedMoves;
     }
 }

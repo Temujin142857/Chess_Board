@@ -135,6 +135,7 @@ public class Board { //represents the game board
      * @return
      */
     public boolean isCheck(int[] kingLocation, Board board){
+        System.out.println("wussup"+board.at(2,2).getName());
         for (Piece[] pieces:board.getPieces()){
             for (Piece piece:pieces) {
                 if (!piece.getName().equals("EMPTY") //doesn't check empty pieces
@@ -256,11 +257,11 @@ public class Board { //represents the game board
      * @return if location is empty or not
      */
     public boolean isEmpty(int[] location){
-        return pieces[location[0]][location[1]]==empty;
+        return pieces[location[0]][location[1]].getName().equals("EMPTY");
     }
 
     public boolean isEmpty(int x, int y){
-        return pieces[x][y]==empty;
+        return pieces[x][y].getName().equals("EMPTY");
     }
 
     public Piece[][] getPieces() {
