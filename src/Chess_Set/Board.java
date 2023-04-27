@@ -9,6 +9,7 @@ public class Board { //represents the game board
     final private String[] LETTERS ={"a","b","c","d","e","f","g","h"}; // letters for the horizontal lines.
     final private EMPTY empty=new EMPTY("EMPTY",null); // create an empty object, which represents an empty square on the board
     private Piece[][] pieces = new Piece[8][8]; // array that contains all the pieces.
+    private Piece enPassantable=null;
 
     /**
      * Constructor
@@ -57,7 +58,7 @@ public class Board { //represents the game board
             return 0;
         }
         if(!isValidLocation(location1)||!isValidLocation(location2)){
-            System.out.println("invalid location, board line 47");
+            System.out.println("invalid location, how did you click there?");
             return 0;
         }
         if(at(location2).getName().charAt(0)==at(location1).getName().charAt(0)){
@@ -69,8 +70,10 @@ public class Board { //represents the game board
             return 0;
         }
 
+
         if (at(location1).canMove(horizontal_shift,vertical_shift,this,isPawnCapturing(location1,location2)))
         {
+            boolean enPassant = false;
             at(location1).setHasMoved(true);
             boolean castling=isCastling(location1,location2);
             at(location1).setLocation(location2);
@@ -86,8 +89,13 @@ public class Board { //represents the game board
                 pieces[rookLocation[0]][rookLocation[1]]=empty;
             }
             else{
+                enPassant=isEnPassant(location1,location2);
+                if (enPassant&&enPassantable.getName().charAt(0)=='W'){pieces[location2[0]][location2[1]+1]=empty;}
+                else if(enPassant){pieces[location2[0]][location2[1]-1]=empty;}
                 pieces[location2[0]][location2[1]]=at(location1);
             }
+            if(at(location1).getName().charAt(1)=='P'&&Math.abs(vertical_shift)==2){enPassantable=at(location1);}
+            else {enPassantable=null;}
             pieces[location1[0]][location1[1]]=empty;
             for (Piece[] pieces: pieces){
                 for (Piece piece:pieces) {
@@ -98,6 +106,7 @@ public class Board { //represents the game board
                 }
             }
             if (castling){return 2;}
+            if (enPassant){return 3;}
             return 1;
         }
         System.out.println("illegal move line 103 board");
@@ -105,8 +114,20 @@ public class Board { //represents the game board
         return 0;
     }
 
+    private boolean isEnPassant(int location1[], int location2[]){
+        if(Math.abs(location1[0]-location2[0])==1&&enPassantable!=null&&enPassantable.getName().charAt(0)=='W'&&at(location2[0],3).getName().equals(enPassantable.getName())){
+            return true;
+        }
+
+        if(Math.abs(location1[0]-location2[0])==1&&enPassantable!=null&&enPassantable.getName().charAt(0)=='B'&&at(location2[0],4).getName().equals(enPassantable.getName())){
+            return true;
+        }
+        return false;
+    }
+
+
     private boolean isPawnCapturing(int[] location1,int[] location2){
-        return (at(location1).getName().charAt(1)=='P' && !at(location2).getName().equals("EMPTY"));
+        return (at(location1).getName().charAt(1)=='P' && !at(location2).getName().equals("EMPTY"))||isEnPassant(location1,location2);
     }
 
     private boolean isCastling(int[] location1, int[] location2){
@@ -135,16 +156,12 @@ public class Board { //represents the game board
      * @return
      */
     public boolean isCheck(int[] kingLocation, Board board){
-        System.out.println("wussup"+board.at(2,2).getName());
         for (Piece[] pieces:board.getPieces()){
             for (Piece piece:pieces) {
                 if (!piece.getName().equals("EMPTY") //doesn't check empty pieces
                     && piece.getName().charAt(0)!=board.at(kingLocation).getName().charAt(0) //only checks pieces the opposite colour as the king
                     && piece.canMove(kingLocation, board))
                 {
-                    System.out.println("piece at "+piece.getLocation()[0]+", "+piece.getLocation()[1]);
-                    System.out.println("piece that is checking:"+piece.getName());
-                    System.out.println(at(kingLocation).getName());
                     System.out.println("ischeck");
                     return true;
                 }
@@ -152,7 +169,6 @@ public class Board { //represents the game board
         }
         return false;
     }
-
 
     public boolean isCheckmate(int[] location, Board board) {
         Piece[][] pieces=board.getPieces();
@@ -179,7 +195,6 @@ public class Board { //represents the game board
      */
     public boolean wouldBeCheck(int[] location1, int[] location2){
         char colour=at(location1).getName().charAt(0);
-        System.out.println("colour to check: "+colour);
         Piece[][] possible_board=new Piece[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -188,10 +203,8 @@ public class Board { //represents the game board
         }
         Board board2=new Board(possible_board);
         board2.moveWithoutCheck(location1,location2);
-        System.out.println("made it this far");
         return isCheck(board2.findKing(colour),board2);
     }
-
 
     public int moveWithoutCheck(int[] location1, int[] location2){
         int horizontal_shift=location2[0]-location1[0];
@@ -226,6 +239,9 @@ public class Board { //represents the game board
                 pieces[rookLocation[0]][rookLocation[1]]=empty;
             }
             else{
+                boolean enPassant=isEnPassant(location1,location2);
+                if (enPassant&&enPassantable.getName().charAt(0)=='W'){pieces[location2[0]][location2[1]+1]=empty;}
+                else if(enPassant){pieces[location2[0]][location2[1]-1]=empty;}
                 pieces[location2[0]][location2[1]]=at(location1);
             }
             pieces[location1[0]][location1[1]]=empty;
@@ -236,7 +252,6 @@ public class Board { //represents the game board
         return 0;
     }
 
-
     public int[] findKing(char colour){
         for (Piece[] column: pieces) {
             for (Piece piece:column) {
@@ -246,9 +261,9 @@ public class Board { //represents the game board
         return null;
     }
 
-    public void put(int[] location1, int[] location2){
-        pieces[location2[0]][location2[1]]=at(location1);
-        pieces[location1[0]][location1[1]]=empty;
+    public void promote(int[] location, String newPieceName)throws NotAPawnException{
+        //if(at(location).getName().charAt(2)!='P'){throw new NotAPawnException("Can't promote a piece that isn't a pawn");}
+        pieces[location[0]][location[1]]=Piece.makePiece(newPieceName,location);
     }
 
     /**
@@ -276,7 +291,15 @@ public class Board { //represents the game board
         return pieces[x][y];
     }
 
+    //-------------------------------------------------------------------------------------
     //potentially useful deprecated code
+    //--------------------------------------------------------------------------------------
+
+
+    public void put(int[] location1, int[] location2){
+        pieces[location2[0]][location2[1]]=at(location1);
+        pieces[location1[0]][location1[1]]=empty;
+    }
 
     /**
      * returns the square the rook should go to

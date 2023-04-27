@@ -1,4 +1,5 @@
 import Chess_Set.Board;
+import Chess_Set.NotAPawnException;
 import Chess_Set.Pieces_Classes.Piece;
 
 
@@ -24,7 +25,7 @@ import javax.swing.border.Border;
 public class GUI {
     private boolean white_active=true;
     private boolean isPieceHeld;
-    private int[] pieceHeld;
+    private int[] pieceHeld;//pretty sure this is a coordinate of the form {x,y} with x and y being ints between 0 and 7 inclusively
     private Player Wplayer;
     private Player Bplayer;
     private Board board;
@@ -60,7 +61,7 @@ public class GUI {
             else if (i%2==1&&((i/8)%2==1))panels[i].setBackground(Color.lightGray);
             else panels[i].setBackground(Color.white);
             panels[i].setBounds(x,y,width,height);
-            if(i!=64)panels[i].addMouseListener(new MouseListener());
+            if(i!=64)panels[i].addMouseListener(new MouseListenerForSquares());
             frame.add(panels[i]);
         }
         panels[64].setBackground(new Color(115,86,4));
@@ -102,7 +103,7 @@ public class GUI {
      * but I need both values for the move function in board
      * could make panels a two dimensional array, just using x*8+y works fine though
      */
-    private class MouseListener implements java.awt.event.MouseListener {
+    private class MouseListenerForSquares implements java.awt.event.MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             if(isCheckmate){return;}
@@ -111,31 +112,43 @@ public class GUI {
             if (!isPieceHeld){isPieceHeld=true;pieceHeld=new int[]{x,y};highlightBorder(panels[x*8+y]);System.out.println("Piece selected");return;}
             else if (white_active){
                 int moveResult=Wplayer.move(board, pieceHeld,new int[]{x,y});
-                if(moveResult>0){//not castling
+                if(moveResult>0){//move is legal
                     isPieceHeld=false;white_active=false;
                     moveAPieceToASquare(pieceHeld,new int[]{x,y});
                     if (board.isCheckmate(board.findKing('B'),board)){
                         System.out.println("checkmate");
                         isCheckmate=true;
                     }
-                    if (moveResult==2){//is castling
+                    else if (moveResult==2){//is castling
                         moveAPieceToASquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
+                    }
+                    else if (moveResult==3){
+                        removePieceFromASquare(new int[]{x,y-1});
                     }
                 }
             }
             else {
                 int moveResult=Bplayer.move(board, pieceHeld,new int[]{x,y});
-                if(moveResult>0){//not castling
+                if(moveResult>0){//move is legal
                     isPieceHeld=false;white_active=true;
-                    if(panels[x*8+y].getComponents().length!=0){panels[x*8+y].remove(0);}//if there is a piece on the square removes it
                     moveAPieceToASquare(pieceHeld,new int[]{x,y});
                     if (board.isCheckmate(board.findKing('W'),board)){
                         System.out.println("checkmate");
                         isCheckmate=true;
                     }
-                    if (moveResult==2){//is castling
+                    else if (moveResult==2){//is castling
                         moveAPieceToASquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
                     }
+                    else if (moveResult==3){
+                        removePieceFromASquare(new int[]{x,y+1});
+                    }
+                }
+            }
+            if(board.at(new int[]{x,y}).getName().charAt(1)=='P'&&((y==7&&!white_active)||(y==0&&white_active))){
+                try {
+                    displayPromotionOptions(x,y);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
             isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
@@ -143,53 +156,111 @@ public class GUI {
             System.out.println("finished");
         }
 
-        private void endGame(){
-            System.out.println("lol, someone lost");
+        @Override
+        public void mousePressed(MouseEvent e) {}
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+        @Override
+        public void mouseExited(MouseEvent e) {}
+    }
+
+    private void displayPromotionOptions(int x, int y) throws IOException {
+        int top=y/7;//0 if y is 0, 7 if y is seven
+        System.out.println("x"+x);
+        System.out.println(y);
+        BufferedImage img;
+        String colour ="B";
+        if(white_active){colour="W";}
+        JPanel queen=new JPanel();
+        queen.setName(colour +"Queen");
+        queen.setBounds(x,top*(8*height+vertical_shift_down),width/3,height/3);
+        JPanel knight=new JPanel();
+        knight.setName(colour +"Knight");
+        knight.setBounds(x+30,top*(8*height+vertical_shift_down),width/3,height/3);
+        JPanel bishop=new JPanel();
+        bishop.setName(colour +"Bishop");
+        bishop.setBounds(x+60,top*(8*height+vertical_shift_down),width/3,height/3);
+        JPanel rook=new JPanel();
+        rook.setName(colour +"Rook");
+        rook.setBounds(x+90,top*(8*height+vertical_shift_down),width/3,height/3);
+        JPanel[] temp=new JPanel[]{queen,rook,bishop,knight};
+        for (JPanel panel:temp) {
+            panel.addMouseListener(new MouseListenerForPromotion(x,y));
+            try {
+                img = ImageIO.read(new File("src/Chess_Set/Pieces_Images/" + panel.getName() + ".png"));
+            }
+            catch(IOException e){
+                img = ImageIO.read(new File("Pieces_Images/" + panel.getName() + ".png"));
+            }
+            JLabel label = new JLabel(new ImageIcon(img));
+            label.setSize(width/3, width/3);
+            panel.add(label);
+            frame.add(panel);
         }
+        frame.pack();
+        System.out.println("hiiii");
+    }
 
-        private void moveAPieceToASquare(int[] originalLocation, int[] desiredLocation){
-            //if there is a piece on the square removes it
-            if(panels[desiredLocation[0]*8+desiredLocation[1]].getComponents().length!=0){panels[desiredLocation[0]*8+desiredLocation[1]].remove(0);}
-            //moves the held piece to the now empty square
-            panels[desiredLocation[0]*8+desiredLocation[1]].add(panels[originalLocation[0]*8+originalLocation[1]].getComponent(0));
-            panels[desiredLocation[0]*8+desiredLocation[1]].updateUI();
-            panels[originalLocation[0]*8+originalLocation[1]].updateUI();
-            frame.pack();
+    private class MouseListenerForPromotion implements java.awt.event.MouseListener{
+        private int x;
+        private int y;
+        public MouseListenerForPromotion(int x, int y){
+            this.x=x;
+            this.y=y;
         }
-
-        private void highlightBorder(JPanel panel){
-            Border compound;
-            Border line = BorderFactory.createLineBorder(Color.yellow);
-            compound = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
-            compound = BorderFactory.createCompoundBorder(compound,line);
-            panel.setBorder(compound);
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            //needs to find the square the promotion is happening on, and set x and y appropriately
+            try {
+                board.promote(new int[]{x,y},e.getComponent().getName());
+            } catch (NotAPawnException ex) {
+                ex.printStackTrace();
+            }
         }
-
-        private void unHighlightBorder(JPanel panel){
-            panel.setBorder(BorderFactory.createEmptyBorder());
-        }
-
-
 
         @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
+        public void mousePressed(MouseEvent e) { }
         @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
+        public void mouseReleased(MouseEvent e) {}
         @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
+        public void mouseEntered(MouseEvent e) {}
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(MouseEvent e) {}
+    }
 
-        }
+    private void endGame(){
+        System.out.println("lol, someone lost");
+    }
+
+    private void moveAPieceToASquare(int[] originalLocation, int[] desiredLocation){
+        //if there is a piece on the square removes, important for capturing pieces
+        //the piece is automatically removed from the original location by adding it to the desired panel
+        removePieceFromASquare(desiredLocation);
+        //moves the held piece to the now empty square
+        panels[desiredLocation[0]*8+desiredLocation[1]].add(panels[originalLocation[0]*8+originalLocation[1]].getComponent(0));
+        panels[desiredLocation[0]*8+desiredLocation[1]].updateUI();
+        panels[originalLocation[0]*8+originalLocation[1]].updateUI();
+        //frame.pack();
+    }
+
+    private void removePieceFromASquare(int[] location){
+        if(panels[location[0]*8+location[1]].getComponents().length!=0){panels[location[0]*8+location[1]].remove(0);}
+        panels[location[0]*8+location[1]].updateUI();
+       // frame.pack();
+    }
+
+    private void highlightBorder(JPanel panel){
+        Border compound;
+        Border line = BorderFactory.createLineBorder(Color.yellow);
+        compound = BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(), BorderFactory.createLoweredBevelBorder());
+        compound = BorderFactory.createCompoundBorder(compound,line);
+        panel.setBorder(compound);
+    }
+
+    private void unHighlightBorder(JPanel panel){
+        panel.setBorder(BorderFactory.createEmptyBorder());
     }
 
 }

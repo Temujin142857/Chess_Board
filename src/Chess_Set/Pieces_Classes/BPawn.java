@@ -26,7 +26,7 @@ public class BPawn implements Piece {
      */
     @Override
     public boolean canMove(int horizontal_shift, int vertical_shift, Board board, boolean isCapturing) {
-        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){return true;}
+        if(isCapturing&&Math.abs(horizontal_shift)==1&&vertical_shift==-1){return true;}//handles en passant as well
         if(!isCapturing&&location[1]==6&&horizontal_shift==0&&vertical_shift==-2&&board.isEmpty(location[0],5)&& board.isEmpty(location[0],4)){return true;}
         if(!isCapturing&&horizontal_shift==0&&vertical_shift==-1&&board.isEmpty(location[0],location[1]-1)){return true;}
         return false;
