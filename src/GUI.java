@@ -36,9 +36,13 @@ public class GUI {
     private final int vertical_shift_down=35;
     private boolean isCheckmate=false;
 
+    private final CardLayout parent=new CardLayout();
     private final JFrame frame= new JFrame("Tomio's Chessboard");
 
+
+
     public void play(Board board) throws IOException {
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(820,820));
         frame.pack();
@@ -116,8 +120,8 @@ public class GUI {
                     isPieceHeld=false;white_active=false;
                     moveAPieceToASquare(pieceHeld,new int[]{x,y});
                     if (board.isCheckmate(board.findKing('B'),board)){
-                        System.out.println("checkmate");
                         isCheckmate=true;
+                        endGame("White");
                     }
                     else if (moveResult==2){//is castling
                         moveAPieceToASquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
@@ -133,8 +137,8 @@ public class GUI {
                     isPieceHeld=false;white_active=true;
                     moveAPieceToASquare(pieceHeld,new int[]{x,y});
                     if (board.isCheckmate(board.findKing('W'),board)){
-                        System.out.println("checkmate");
                         isCheckmate=true;
+                        endGame("Black");
                     }
                     else if (moveResult==2){//is castling
                         moveAPieceToASquare(new int[]{(int)(1.75*(x-2)),y},new int[]{x+Integer.signum(pieceHeld[0]-x),y});
@@ -152,7 +156,6 @@ public class GUI {
                 }
             }
             isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
-            if(isCheckmate){endGame();}
             System.out.println("finished");
         }
 
@@ -200,7 +203,6 @@ public class GUI {
             frame.add(panel);
         }
         frame.pack();
-        System.out.println("hiiii");
     }
 
     private class MouseListenerForPromotion implements java.awt.event.MouseListener{
@@ -230,7 +232,14 @@ public class GUI {
         public void mouseExited(MouseEvent e) {}
     }
 
-    private void endGame(){
+    private void endGame(String colour){
+        final JFrame gameOver=new JFrame("Checkmate");
+        gameOver.setMinimumSize(new Dimension(200,100));
+        gameOver.setLocation(400,400);
+        TextArea message=new TextArea(colour+" won!");
+        message.setFont(new Font("Times New Roman",1,30));
+        gameOver.add(message);
+        gameOver.setVisible(true);
         System.out.println("lol, someone lost");
     }
 

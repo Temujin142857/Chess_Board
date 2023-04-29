@@ -20,5 +20,5 @@ Build and optimise a program to play chess against a user.
 
 
 ##Current step
-allowing en passant, promotion
+promotion, checkmate
 Starting conception on engine

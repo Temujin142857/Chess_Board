@@ -9,23 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="finally fixed check, I think completey&#10;reoganised the piece classes, the setters and getters are all grouped at the bottom now">
-      <change afterPath="$PROJECT_DIR$/src/Chess_Set/NotAPawnException.java" afterDir="false" />
+    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="just opdating these I think">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/BPawn.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/BPawn.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Bishop.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Bishop.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/King.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/King.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Knight.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Knight.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Piece.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Piece.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Queen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Queen.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Rook.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/Rook.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/WPawn.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Pieces_Classes/WPawn.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Chess_Set/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/BPawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Pieces_Classes/BPawn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -269,7 +256,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682284761863</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="En passant should work now">
+      <created>1682616030987</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1682616030987</updated>
+    </task>
+    <task id="LOCAL-00022" summary="just opdating these I think">
+      <created>1682616080151</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1682616080151</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,6 +301,8 @@
     <MESSAGE value="continued debugging check" />
     <MESSAGE value="the bishop thinks the king is on 2,2 for some reason??!?!?!" />
     <MESSAGE value="finally fixed check, I think completey&#10;reoganised the piece classes, the setters and getters are all grouped at the bottom now" />
-    <option name="LAST_COMMIT_MESSAGE" value="finally fixed check, I think completey&#10;reoganised the piece classes, the setters and getters are all grouped at the bottom now" />
+    <MESSAGE value="En passant should work now" />
+    <MESSAGE value="just opdating these I think" />
+    <option name="LAST_COMMIT_MESSAGE" value="just opdating these I think" />
   </component>
 </project>

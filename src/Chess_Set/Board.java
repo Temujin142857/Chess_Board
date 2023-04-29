@@ -175,9 +175,11 @@ public class Board { //represents the game board
         if (!isCheck(location, board)) return false;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (!pieces[i][j].getName().equals("EMPTY")) {
+                if (pieces[i][j].getName().charAt(0)==at(location).getName().charAt(0)) {
                     for (int[] move : pieces[i][j].getPossibleMoves()) {
+                        //go through every possible move, and if one of them gets you out of check it's not checkmate
                         if (!wouldBeCheck(new int[]{i, j}, move)) {
+                            System.out.println("To avoid checkmate move "+at(i,j).getName()+"to "+move[0]+","+move[1]);
                             return false;
                         }
                     }
