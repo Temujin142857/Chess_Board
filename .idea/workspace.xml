@@ -9,9 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="just opdating these I think">
+    <list default="true" id="b68440c8-6942-46bd-85ed-61f935b68709" name="Changes" comment="checkmate detection works, and will properly end the game and display a popup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/Chess_Set/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListenerForPromotion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListenerForPromotion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListenerForSquares.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI$MouseListenerForSquares.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chess_Board/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chess_Board/GUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Chess_Set/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Chess_Set/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
     </list>
@@ -270,7 +273,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682616080151</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="checkmate detection works, and will properly end the game and display a popup">
+      <created>1682741666164</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1682741666164</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -303,6 +313,7 @@
     <MESSAGE value="finally fixed check, I think completey&#10;reoganised the piece classes, the setters and getters are all grouped at the bottom now" />
     <MESSAGE value="En passant should work now" />
     <MESSAGE value="just opdating these I think" />
-    <option name="LAST_COMMIT_MESSAGE" value="just opdating these I think" />
+    <MESSAGE value="checkmate detection works, and will properly end the game and display a popup" />
+    <option name="LAST_COMMIT_MESSAGE" value="checkmate detection works, and will properly end the game and display a popup" />
   </component>
 </project>

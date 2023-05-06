@@ -266,6 +266,8 @@ public class Board { //represents the game board
     public void promote(int[] location, String newPieceName)throws NotAPawnException{
         //if(at(location).getName().charAt(2)!='P'){throw new NotAPawnException("Can't promote a piece that isn't a pawn");}
         pieces[location[0]][location[1]]=Piece.makePiece(newPieceName,location);
+        pieces[location[0]][location[1]].updatePossibleMoves(this);
+        pieces[location[0]][location[1]].updateBlockedMoves(this);
     }
 
     /**

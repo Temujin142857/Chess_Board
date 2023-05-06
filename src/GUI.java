@@ -35,9 +35,11 @@ public class GUI {
     private final int horizontal_shift_right = 35;
     private final int vertical_shift_down=35;
     private boolean isCheckmate=false;
-
+    private final MouseListenerForSquares mouselistenerforsquares=new MouseListenerForSquares();
+    private final MouseListenerForPromotion mouselistenerforpromotion=new MouseListenerForPromotion();
     private final CardLayout parent=new CardLayout();
     private final JFrame frame= new JFrame("Tomio's Chessboard");
+    private int[] promotionSquare={};
 
 
 
@@ -65,7 +67,8 @@ public class GUI {
             else if (i%2==1&&((i/8)%2==1))panels[i].setBackground(Color.lightGray);
             else panels[i].setBackground(Color.white);
             panels[i].setBounds(x,y,width,height);
-            if(i!=64)panels[i].addMouseListener(new MouseListenerForSquares());
+            panels[i].removeMouseListener(mouselistenerforpromotion);
+            if(i!=64)panels[i].addMouseListener(mouselistenerforsquares);
             frame.add(panels[i]);
         }
         panels[64].setBackground(new Color(115,86,4));
@@ -86,7 +89,9 @@ public class GUI {
                 for (char c:piece.getName().toCharArray()){
                     if (!Character.isDigit(c)){pieceName+=c;}
                 }
-                if (pieceName.equals("EMPTY"))continue;
+                if (pieceName.equals("EMPTY")){
+                    if(panels[i].getComponents().length!=0){panels[i].remove(0);panels[i].updateUI();}
+                    continue;}
                 try {
                     img = ImageIO.read(new File("src/Chess_Set/Pieces_Images/" + pieceName + ".png"));
                 }
@@ -95,7 +100,9 @@ public class GUI {
                 }
                 JLabel label = new JLabel(new ImageIcon(img));
                 label.setSize(90, 90);
+                if(panels[i].getComponents().length!=0){panels[i].remove(0);}
                 panels[i].add(label);
+                panels[i].updateUI();
             }
         }
     }
@@ -148,6 +155,7 @@ public class GUI {
                     }
                 }
             }
+            isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
             if(board.at(new int[]{x,y}).getName().charAt(1)=='P'&&((y==7&&!white_active)||(y==0&&white_active))){
                 try {
                     displayPromotionOptions(x,y);
@@ -155,7 +163,6 @@ public class GUI {
                     ex.printStackTrace();
                 }
             }
-            isPieceHeld=false;unHighlightBorder(panels[pieceHeld[0]*8+pieceHeld[1]]);System.out.println("Piece deselected");
             System.out.println("finished");
         }
 
@@ -169,55 +176,60 @@ public class GUI {
         public void mouseExited(MouseEvent e) {}
     }
 
+
+    // assume to access andy panel given an x and y, formula is panel[x*8+y]
     private void displayPromotionOptions(int x, int y) throws IOException {
-        int top=y/7;//0 if y is 0, 7 if y is seven
-        System.out.println("x"+x);
-        System.out.println(y);
+        //don't need to save the pieces that are removed, just remove all the promotion options and use initialise pieces after the piece is selected
+        final String[] names={"Queen","Knight","Rook","Bishop"};
+        String colour= String.valueOf(board.at(x,y).getName().charAt(0));
         BufferedImage img;
-        String colour ="B";
-        if(white_active){colour="W";}
-        JPanel queen=new JPanel();
-        queen.setName(colour +"Queen");
-        queen.setBounds(x,top*(8*height+vertical_shift_down),width/3,height/3);
-        JPanel knight=new JPanel();
-        knight.setName(colour +"Knight");
-        knight.setBounds(x+30,top*(8*height+vertical_shift_down),width/3,height/3);
-        JPanel bishop=new JPanel();
-        bishop.setName(colour +"Bishop");
-        bishop.setBounds(x+60,top*(8*height+vertical_shift_down),width/3,height/3);
-        JPanel rook=new JPanel();
-        rook.setName(colour +"Rook");
-        rook.setBounds(x+90,top*(8*height+vertical_shift_down),width/3,height/3);
-        JPanel[] temp=new JPanel[]{queen,rook,bishop,knight};
-        for (JPanel panel:temp) {
-            panel.addMouseListener(new MouseListenerForPromotion(x,y));
+        int pIndex;
+        promotionSquare=new int[]{x,y};
+        for (int i = 0; i < 4; i++) {
+            String pieceName = colour +names[i];
             try {
-                img = ImageIO.read(new File("src/Chess_Set/Pieces_Images/" + panel.getName() + ".png"));
+                img = ImageIO.read(new File("src/Chess_Set/Pieces_Images/" + pieceName + ".png"));
             }
             catch(IOException e){
-                img = ImageIO.read(new File("Pieces_Images/" + panel.getName() + ".png"));
+                img = ImageIO.read(new File("Pieces_Images/" + pieceName + ".png"));
             }
-            JLabel label = new JLabel(new ImageIcon(img));
-            label.setSize(width/3, width/3);
-            panel.add(label);
-            frame.add(panel);
+            JLabel option=new JLabel(new ImageIcon(img));
+            option.setSize(width,height);
+            pIndex=(x+i)*8+y;
+            if(pIndex>63){pIndex=(x-(x+i)%7)*8+y;}
+            if(panels[pIndex].getComponents().length!=0)panels[pIndex].remove(0);
+            panels[pIndex].add(option);
+            panels[pIndex].setName(pieceName);
+            panels[pIndex].removeMouseListener(mouselistenerforsquares);
+            panels[pIndex].addMouseListener(mouselistenerforpromotion);
         }
-        frame.pack();
+    }
+
+    private void repairBoard(){
+        for (int i = 0; i < panels.length-1; i++) {
+            if(panels[i].getMouseListeners()[0].equals(mouselistenerforpromotion)){
+                panels[i].removeMouseListener(mouselistenerforpromotion);
+                if(i!=64)panels[i].addMouseListener(mouselistenerforsquares);
+            }
+        }
+
     }
 
     private class MouseListenerForPromotion implements java.awt.event.MouseListener{
-        private int x;
-        private int y;
-        public MouseListenerForPromotion(int x, int y){
-            this.x=x;
-            this.y=y;
+
+        public MouseListenerForPromotion(){
         }
         @Override
         public void mouseClicked(MouseEvent e) {
-            //needs to find the square the promotion is happening on, and set x and y appropriately
             try {
-                board.promote(new int[]{x,y},e.getComponent().getName());
+                System.out.println(e.getComponent().getName());
+                board.promote(promotionSquare,e.getComponent().getName());
+                repairBoard();
+                initialisePieces(board);
+                frame.pack();
             } catch (NotAPawnException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
