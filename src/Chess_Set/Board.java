@@ -46,6 +46,7 @@ public class Board { //represents the game board
 
     /**
     * evaluates the possibility of the move and executes it if possible
+     * note, checking for the correct colour is handled in the player class
     * @param location1 starting location
     * @param location2 ending location
     * @return int 0 if the move isn't legal, 1 if the move is made, 2 is it's made and castling
@@ -69,7 +70,6 @@ public class Board { //represents the game board
             System.out.println("can't move there, you would be in check");
             return 0;
         }
-
 
         if (at(location1).canMove(horizontal_shift,vertical_shift,this,isPawnCapturing(location1,location2)))
         {
@@ -114,6 +114,12 @@ public class Board { //represents the game board
         return 0;
     }
 
+    /**
+     * determines if a given move qualifies as en passant
+     * @param location1
+     * @param location2
+     * @return
+     */
     private boolean isEnPassant(int location1[], int location2[]){
         if(Math.abs(location1[0]-location2[0])==1&&enPassantable!=null&&enPassantable.getName().charAt(0)=='W'&&at(location2[0],3).getName().equals(enPassantable.getName())){
             return true;
@@ -126,10 +132,22 @@ public class Board { //represents the game board
     }
 
 
+    /**
+     * checks if a move is a pawn making a capture
+     * @param location1
+     * @param location2
+     * @return
+     */
     private boolean isPawnCapturing(int[] location1,int[] location2){
         return (at(location1).getName().charAt(1)=='P' && !at(location2).getName().equals("EMPTY"))||isEnPassant(location1,location2);
     }
 
+    /**
+     * checks if a move is meant to be castling
+     * @param location1
+     * @param location2
+     * @return
+     */
     private boolean isCastling(int[] location1, int[] location2){
         if (at(location1).getName().charAt(1)=='K'&&at(location1).getName().charAt(2)!='n'&&Math.abs(location1[0]-location2[0])==2){
             return true;
@@ -140,7 +158,11 @@ public class Board { //represents the game board
         return false;
     }
 
-
+    /**
+     * makes sure the location is on the board
+     * @param location
+     * @return
+     */
     public boolean isValidLocation(int[] location){
         for (int coord:location) {
             if(coord<0||coord>7){return false;}
@@ -170,6 +192,13 @@ public class Board { //represents the game board
         return false;
     }
 
+    /**
+     * checks all the possible moves of all the pieces of the opposing colour and determines if it's checkmate
+     * if there's no check this happens instantaniously, otherwise it's one of the slower parts of the program
+     * @param location
+     * @param board
+     * @return
+     */
     public boolean isCheckmate(int[] location, Board board) {
         Piece[][] pieces=board.getPieces();
         if (!isCheck(location, board)) return false;
@@ -208,6 +237,14 @@ public class Board { //represents the game board
         return isCheck(board2.findKing(colour),board2);
     }
 
+    /**
+     * identical to the move function, but doesn't check if the move would be check
+     * is necessary as part of the process to determine if a given move would be illegal, as it lets me
+     * make the move, then see if the king is in check
+     * @param location1
+     * @param location2
+     * @return
+     */
     public int moveWithoutCheck(int[] location1, int[] location2){
         int horizontal_shift=location2[0]-location1[0];
         int vertical_shift=location2[1]-location1[1];
@@ -254,6 +291,12 @@ public class Board { //represents the game board
         return 0;
     }
 
+    /**
+     * retruns the location of the king of the given colour
+     * can be a source of errors if there somehow isn't a king on the board
+     * @param colour
+     * @return
+     */
     public int[] findKing(char colour){
         for (Piece[] column: pieces) {
             for (Piece piece:column) {
@@ -263,6 +306,12 @@ public class Board { //represents the game board
         return null;
     }
 
+    /**
+     * performs a promotion on a given square, replacing the pawn with a given piece
+     * @param location
+     * @param newPieceName
+     * @throws NotAPawnException
+     */
     public void promote(int[] location, String newPieceName)throws NotAPawnException{
         //if(at(location).getName().charAt(2)!='P'){throw new NotAPawnException("Can't promote a piece that isn't a pawn");}
         pieces[location[0]][location[1]]=Piece.makePiece(newPieceName,location);

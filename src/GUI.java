@@ -37,12 +37,15 @@ public class GUI {
     private boolean isCheckmate=false;
     private final MouseListenerForSquares mouselistenerforsquares=new MouseListenerForSquares();
     private final MouseListenerForPromotion mouselistenerforpromotion=new MouseListenerForPromotion();
-    private final CardLayout parent=new CardLayout();
     private final JFrame frame= new JFrame("Tomio's Chessboard");
     private int[] promotionSquare={};
 
 
-
+    /**
+     * sets all the graphics up to start the game
+     * @param board
+     * @throws IOException
+     */
     public void play(Board board) throws IOException {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,6 +59,9 @@ public class GUI {
         frame.setVisible(true);
     }
 
+    /**
+     * sets up the squares, uses the panels array
+     */
     private void initialiseSquares(){
         int x;
         int y;
@@ -215,6 +221,12 @@ public class GUI {
 
     }
 
+    /**
+     * listens for mouse clicks on the promotion options
+     * calls the backend to perform the promotion
+     * returns the promotion squares to the normal listener and pieces
+     * updates the graphics to have the new correct piece displayed
+     */
     private class MouseListenerForPromotion implements java.awt.event.MouseListener{
 
         public MouseListenerForPromotion(){
@@ -244,6 +256,11 @@ public class GUI {
         public void mouseExited(MouseEvent e) {}
     }
 
+    /**
+     * takes the colour which won
+     * creates the end game popup
+     * @param colour
+     */
     private void endGame(String colour){
         final JFrame gameOver=new JFrame("Checkmate");
         gameOver.setMinimumSize(new Dimension(200,100));
@@ -255,6 +272,12 @@ public class GUI {
         System.out.println("lol, someone lost");
     }
 
+    /**
+     * removes anything on the target square
+     * puts the piece from the old square onto the new one
+     * @param originalLocation
+     * @param desiredLocation
+     */
     private void moveAPieceToASquare(int[] originalLocation, int[] desiredLocation){
         //if there is a piece on the square removes, important for capturing pieces
         //the piece is automatically removed from the original location by adding it to the desired panel

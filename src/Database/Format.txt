@@ -1,9 +1,0 @@
-Entities:
-    boards
-    games
-
-relationship:
-    board belongs to a game
-
-plan:
-    program searches through the database and ranks boards by how similar they are to the current position

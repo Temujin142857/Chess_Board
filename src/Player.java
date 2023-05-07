@@ -11,19 +11,27 @@ public class Player { //sets the basics attributes of a player like color, and h
         this.colour=colour;
     }
 
+    /**
+     * conifrms the colour is correct then passes the request to the board
+     * @param board
+     * @param location1
+     * @param location2
+     * @return
+     */
     public int move(Board board, int[] location1, int[] location2){
-        // to be done
-        // player selects a square to move to, a call is made to the board requesting to move
-        // if move is illegal player is prompted to select another move
-            // if the player tries to move the wrong coloured piece
-            if (board.at(location1[0],location1[1]).getName().charAt(0)!=colour){
-                System.out.println(board.at(location1).getName().charAt(0));
-                System.out.println("wrong colour");
-                return 0;
-            }
+        if (board.at(location1[0],location1[1]).getName().charAt(0)!=colour){
+            System.out.println(board.at(location1).getName().charAt(0));
+            System.out.println("wrong colour");
+            return 0;
+        }
         return board.move(location1,location2);
     }
 
+    /**
+     * originally I made a console version of chess to test the backend, so this function accounts for locations of the form e4.
+     * @param location
+     * @return
+     */
     public int[] getLocation(String location){
         char[] temp=location.toCharArray();
         int[] result=new int[2];
@@ -52,10 +60,4 @@ public class Player { //sets the basics attributes of a player like color, and h
         }
         return result;
     }
-
-    public boolean isCheckmate(Board board){
-        // use vision, to find if a player lost -> useful for the main.
-        return false;
-    }
-
 }
